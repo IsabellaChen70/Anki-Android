@@ -401,6 +401,11 @@
             android:label="@string/pref_cat_about_title"
             android:exported="false"
             />
+        <activity
+            android:name="com.ichi2.anki.VantageDashboardActivity"
+            android:label="@string/menu_vantage_dashboard"
+            android:exported="false"
+            />
 
         <activity-alias
             android:name="com.ichi2.anki.AnkiCardContextMenuAction"

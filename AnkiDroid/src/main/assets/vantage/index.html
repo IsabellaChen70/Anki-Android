@@ -1,0 +1,337 @@
+<!doctype html><html lang='en'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet"></head><body><style>/* Vantage dashboard. Flat Design system (no shadows, color blocks, Outfit). */
+
+:root {
+  --bg: #ffffff;
+  --fg: #111827;
+  --primary: #3b82f6;
+  --primary-600: #2563eb;
+  --primary-50: #eff6ff;
+  --secondary: #10b981;
+  --secondary-600: #059669;
+  --secondary-50: #ecfdf5;
+  --accent: #f59e0b;
+  --accent-600: #d97706;
+  --accent-50: #fffbeb;
+  --muted: #f3f4f6;
+  --muted-200: #e5e7eb;
+  --border: #e5e7eb;
+  --gray-500: #6b7280;
+  --gray-900: #111827;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: 'Outfit', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: 'ss01';
+}
+
+.app { max-width: 80rem; margin: 0 auto; padding-bottom: 4rem; }
+
+/* ---------- Header (dark color block, poster look) ---------- */
+.masthead {
+  position: relative;
+  overflow: hidden;
+  background: var(--gray-900);
+  color: #fff;
+  padding: 2.5rem 2.5rem 2rem;
+}
+.masthead__deco { position: absolute; inset: 0; pointer-events: none; }
+.masthead__deco span {
+  position: absolute; border-radius: 9999px; opacity: 0.06; background: #fff;
+}
+.masthead__deco .c1 { width: 22rem; height: 22rem; right: -6rem; top: -9rem; }
+.masthead__deco .c2 { width: 12rem; height: 12rem; right: 9rem; bottom: -6rem; opacity: 0.05; }
+.masthead__deco .sq {
+  position: absolute; width: 10rem; height: 10rem; left: 40%; top: -4rem;
+  background: var(--primary); opacity: 0.10; transform: rotate(20deg); border-radius: var(--radius-lg);
+}
+.masthead__row { position: relative; display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+.brand__mark { font-size: 2.6rem; font-weight: 800; letter-spacing: -0.03em; line-height: 1; }
+.brand__mark .dot { color: var(--primary); }
+.brand__tag { margin-top: 0.4rem; color: #d1d5db; font-weight: 500; letter-spacing: 0.01em; }
+
+.toolbar { display: flex; gap: 0.6rem; }
+.btn {
+  font-family: inherit; font-weight: 600; font-size: 0.9rem; border: 0; cursor: pointer;
+  border-radius: var(--radius-md); padding: 0 1.1rem; height: 2.75rem;
+  display: inline-flex; align-items: center; gap: 0.5rem; white-space: nowrap;
+  transition: all 200ms ease;
+}
+.btn svg { width: 1.05rem; height: 1.05rem; flex: none; }
+.btn:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--primary); }
+.btn--primary { background: var(--primary); color: #fff; }
+.btn--primary:hover { background: var(--primary-600); transform: scale(1.05); }
+.btn--ghost { background: rgba(255,255,255,0.12); color: #fff; }
+.btn--ghost:hover { background: rgba(255,255,255,0.22); transform: scale(1.05); }
+
+/* meta chips */
+.chips { position: relative; display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.5rem; }
+.chip {
+  display: inline-flex; align-items: center; gap: 0.45rem;
+  background: rgba(255,255,255,0.1); color: #f9fafb; font-weight: 500; font-size: 0.85rem;
+  padding: 0.4rem 0.8rem; border-radius: 9999px;
+}
+.chip svg { width: 1rem; height: 1rem; }
+.chip--on { background: var(--secondary); color: #052e21; font-weight: 600; }
+.chip--off { background: rgba(255,255,255,0.1); }
+
+/* ---------- Section scaffolding ---------- */
+.section { padding: 2rem 2.5rem 0; }
+.section__head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 1.1rem; }
+.eyebrow { text-transform: uppercase; letter-spacing: 0.12em; font-weight: 600; font-size: 0.78rem; color: var(--gray-500); }
+.section__title { font-size: 1.35rem; font-weight: 800; letter-spacing: -0.02em; }
+
+/* ---------- Score cards (color blocks) ---------- */
+.scores { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+.card {
+  border-radius: var(--radius-lg); padding: 1.75rem; border: 0;
+  transition: transform 200ms ease, background-color 200ms ease;
+}
+.card:hover { transform: scale(1.02); }
+.card--memory { background: var(--primary-50); }
+.card--memory:hover { background: #dbeafe; }
+.card--perf { background: var(--secondary-50); }
+.card--perf:hover { background: #d1fae5; }
+.card--ready { background: var(--accent-50); }
+.card--ready:hover { background: #fef3c7; }
+.card--abstain { background: var(--muted); }
+.card--abstain:hover { background: var(--muted-200); }
+
+.card__top { display: flex; align-items: center; gap: 0.85rem; margin-bottom: 1.1rem; }
+.iconwrap {
+  width: 3.25rem; height: 3.25rem; border-radius: 9999px; background: #fff;
+  display: grid; place-items: center; flex: none;
+  transition: transform 200ms ease;
+}
+.card:hover .iconwrap { transform: scale(1.1); }
+.iconwrap svg { width: 1.6rem; height: 1.6rem; stroke-width: 2.4; }
+.i-memory { color: var(--primary-600); }
+.i-perf { color: var(--secondary-600); }
+.i-ready { color: var(--accent-600); }
+.i-abstain { color: var(--gray-500); }
+.card__label { text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600; font-size: 0.8rem; color: var(--gray-500); }
+.card__sub { font-size: 0.82rem; color: var(--gray-500); font-weight: 500; }
+
+.metric { display: flex; align-items: flex-end; gap: 0.5rem; line-height: 0.95; }
+.metric__num { font-size: 3.6rem; font-weight: 800; letter-spacing: -0.03em; }
+.metric__unit { font-size: 1.2rem; font-weight: 700; color: var(--gray-500); padding-bottom: 0.55rem; }
+.metric--memory .metric__num { color: var(--primary-600); }
+.metric--perf .metric__num { color: var(--secondary-600); }
+.metric--ready .metric__num { color: var(--accent-600); }
+
+.range { margin-top: 0.55rem; font-weight: 600; color: var(--fg); }
+.range .muted { color: var(--gray-500); font-weight: 500; }
+
+.badge {
+  display: inline-flex; align-items: center; gap: 0.35rem; margin-top: 1rem;
+  font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em;
+  padding: 0.3rem 0.7rem; border-radius: 9999px;
+}
+.badge--high { background: var(--secondary); color: #052e21; }
+.badge--medium { background: var(--accent); color: #442c04; }
+.badge--low { background: var(--muted-200); color: #374151; }
+.badge--insufficient { background: #1f2937; color: #fff; }
+
+.reasons { list-style: none; margin-top: 1.1rem; display: grid; gap: 0.4rem; }
+.reasons li { position: relative; padding-left: 1rem; color: #374151; font-size: 0.9rem; font-weight: 400; }
+.reasons li::before { content: ""; position: absolute; left: 0; top: 0.55rem; width: 0.4rem; height: 0.4rem; border-radius: 9999px; background: currentColor; opacity: 0.4; }
+
+/* abstain state */
+.abstain__title { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.02em; color: var(--accent-600); }
+.abstain__lead { margin-top: 0.4rem; color: #374151; font-weight: 500; }
+
+/* ---------- Coverage ---------- */
+.coverage { display: grid; grid-template-columns: 1.1fr 1fr; gap: 1.25rem; align-items: start; }
+.coverblock { background: var(--muted); border-radius: var(--radius-lg); padding: 1.75rem; }
+.cover__overall { display: flex; align-items: baseline; gap: 0.6rem; }
+.cover__num { font-size: 3rem; font-weight: 800; letter-spacing: -0.03em; }
+.cover__of { color: var(--gray-500); font-weight: 600; }
+.bars { margin-top: 1.4rem; display: grid; gap: 1.05rem; }
+.bar__head { display: flex; justify-content: space-between; font-weight: 600; font-size: 0.92rem; margin-bottom: 0.4rem; }
+.bar__track { height: 0.9rem; background: var(--muted-200); border-radius: 9999px; overflow: hidden; }
+.bar__fill { height: 100%; border-radius: 9999px; transition: width 300ms ease; }
+.bar--chem_phys .bar__fill { background: var(--primary); }
+.bar--bio_biochem .bar__fill { background: var(--secondary); }
+.bar--psych_soc .bar__fill { background: var(--accent); }
+
+/* best next topic block (bold accent) */
+.nextblock { background: var(--gray-900); color: #fff; border-radius: var(--radius-lg); padding: 1.75rem; position: relative; overflow: hidden; }
+.nextblock .deco { position: absolute; width: 12rem; height: 12rem; right: -4rem; bottom: -5rem; border-radius: 9999px; background: var(--accent); opacity: 0.14; }
+.nextblock__eyebrow { text-transform: uppercase; letter-spacing: 0.12em; font-weight: 600; font-size: 0.78rem; color: #9ca3af; }
+.nextblock__title { position: relative; font-size: 1.7rem; font-weight: 800; letter-spacing: -0.02em; margin-top: 0.5rem; }
+.nextblock__meta { position: relative; margin-top: 0.9rem; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.tag { background: rgba(255,255,255,0.12); color: #fff; font-weight: 600; font-size: 0.8rem; padding: 0.35rem 0.75rem; border-radius: 9999px; }
+.tag--accent { background: var(--accent); color: #442c04; }
+
+/* ---------- readiness sections mini-bars ---------- */
+.subsections { margin-top: 1.25rem; display: grid; gap: 0.95rem; }
+.subrow { display: flex; align-items: baseline; justify-content: space-between; gap: 0.75rem; }
+.subrow__label { font-weight: 600; font-size: 0.95rem; }
+.subrow__score { display: flex; align-items: baseline; gap: 0.55rem; }
+.subrow__val { font-weight: 800; font-size: 1.35rem; font-variant-numeric: tabular-nums; color: var(--accent-600); }
+.subrow__range { color: var(--gray-500); font-weight: 500; font-size: 0.85rem; }
+
+/* ---------- footer note ---------- */
+.note { margin: 2rem 2.5rem 0; background: var(--muted); border-radius: var(--radius-lg); padding: 1.25rem 1.5rem; display: flex; gap: 0.85rem; align-items: flex-start; }
+.note svg { width: 1.25rem; height: 1.25rem; color: var(--gray-500); flex: none; margin-top: 0.1rem; }
+.note p { color: #374151; font-weight: 500; font-size: 0.92rem; }
+.note b { font-weight: 700; color: var(--fg); }
+
+.footmeta { margin: 1.25rem 2.5rem 0; color: var(--gray-500); font-size: 0.82rem; font-weight: 500; display: flex; gap: 1rem; flex-wrap: wrap; }
+
+@media (max-width: 900px) {
+  .scores { grid-template-columns: 1fr; }
+  .coverage { grid-template-columns: 1fr; }
+}
+</style><div class="app" id="app"></div><script>window.__VANTAGE__ = {"coverage": 0.7931034482758621, "coverage_by_section": {"chem_phys": 1.0, "bio_biochem": 1.0, "psych_soc": 0.41935483870967744}, "outline_version": "aamc-approx-2023.v1", "n_reviews": 240, "n_cards_seen": 72, "ai_used": false, "updated": "2026-07-01 09:36", "best_next": {"concept_id": "8B", "name": "Social thinking", "section": "psych_soc", "weight": 3.0, "mastery": 0.0, "covered": false, "priority": 3.0}, "section_labels": {"chem_phys": "Chem/Phys", "bio_biochem": "Bio/Biochem", "psych_soc": "Psych/Soc"}, "thresholds": {"memory_cards": 20, "performance_outcomes": 20, "reviews": 200, "coverage": 0.5}, "memory": {"abstained": false, "how_sure": "medium", "n": 72, "reasons": ["mean retrievability 89% over 72 seen cards", "range width 3%"], "point": 0.889, "low": 0.873, "high": 0.905}, "performance": {"abstained": false, "how_sure": "medium", "n": 96, "reasons": ["63/96 application items correct (66%)", "range width 16%"], "point": 0.656, "low": 0.573, "high": 0.731}, "readiness": {"abstained": false, "how_sure": "medium", "n": 240, "reasons": ["partial composite over 3 of 3 science sections", "weighted coverage 79%", "weakest modeled section: Chem/Phys (20/32 items)"], "cars_modeled": false, "sections": {"chem_phys": {"point": 124.3, "low": 120.1, "high": 127.8}, "bio_biochem": {"point": 126.0, "low": 122.1, "high": 129.1}, "psych_soc": {"point": 125.2, "low": 121.2, "high": 128.5}}, "point": 375.5, "low": 368.2, "high": 381.1}};</script><script>/* Vantage dashboard renderer. Reads window.__VANTAGE__ (injected by the add-on),
+   falling back to MOCK for standalone preview. Pure DOM, no framework. */
+
+const ICON = {
+  brain: '<path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/><path d="M15 13a4.5 4.5 0 0 1-3-4 4.5 4.5 0 0 1-3 4"/>',
+  target: '<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>',
+  gauge: '<path d="m12 14 4-4"/><path d="M3.34 19a10 10 0 1 1 17.32 0"/>',
+  grid: '<rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/>',
+  shield: '<path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/>',
+  refresh: '<path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/>',
+  back: '<path d="m12 19-7-7 7-7"/><path d="M19 12H5"/>',
+  layers: '<path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"/>',
+  bolt: '<path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/>',
+};
+
+function svg(name, extra) {
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${extra || ''}">${ICON[name]}</svg>`;
+}
+const pct = (x) => Math.round(x * 100) + '%';
+const esc = (s) => String(s).replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+
+function bullets(lines) {
+  if (!lines || !lines.length) return '';
+  return `<ul class="reasons">${lines.map((l) => `<li>${esc(l)}</li>`).join('')}</ul>`;
+}
+
+function pctCard(kind, iconName, title, sub, s, abstainLine) {
+  const cls = kind === 'memory' ? 'memory' : 'perf';
+  if (s.abstained) {
+    return `<div class="card card--abstain">
+      <div class="card__top"><div class="iconwrap i-abstain">${svg(iconName)}</div>
+        <div><div class="card__label">${esc(title)}</div><div class="card__sub">${esc(sub)}</div></div></div>
+      <div class="abstain__title">Not enough data yet</div>
+      ${bullets([abstainLine])}</div>`;
+  }
+  return `<div class="card card--${cls}">
+    <div class="card__top"><div class="iconwrap i-${cls}">${svg(iconName)}</div>
+      <div><div class="card__label">${esc(title)}</div><div class="card__sub">${esc(sub)}</div></div></div>
+    <div class="metric metric--${cls}"><span class="metric__num">${Math.round(s.point * 100)}</span><span class="metric__unit">%</span></div>
+    <div class="range">likely <b>${pct(s.low)}&ndash;${pct(s.high)}</b></div></div>`;
+}
+
+function readinessCard(s, labels, d) {
+  if (s.abstained) {
+    const items = [];
+    if (d.n_reviews < d.thresholds.reviews)
+      items.push(`${d.thresholds.reviews} reviews (you have ${d.n_reviews})`);
+    if (d.coverage < d.thresholds.coverage)
+      items.push(`${pct(d.thresholds.coverage)} of the exam covered (you have ${pct(d.coverage)})`);
+    return `<div class="card card--abstain">
+      <div class="card__top"><div class="iconwrap i-abstain">${svg('gauge')}</div>
+        <div><div class="card__label">Readiness</div><div class="card__sub">your projected section scores</div></div></div>
+      <div class="abstain__title">No score yet</div>
+      <p class="abstain__lead">You need:</p>
+      ${bullets(items)}</div>`;
+  }
+  const subs = Object.entries(s.sections || {}).map(([k, b]) => {
+    return `<div class="subrow"><div class="subrow__label">${esc(labels[k] || k)}</div>
+      <div class="subrow__score"><span class="subrow__val">${Math.round(b.point)}</span><span class="subrow__range">likely ${Math.round(b.low)}&ndash;${Math.round(b.high)}</span></div></div>`;
+  }).join('');
+  return `<div class="card card--ready">
+    <div class="card__top"><div class="iconwrap i-ready">${svg('gauge')}</div>
+      <div><div class="card__label">Readiness</div><div class="card__sub">your projected section scores</div></div></div>
+    <div class="subsections">${subs}</div></div>`;
+}
+
+function coverageBlock(d) {
+  const labels = d.section_labels;
+  const bars = Object.keys(labels).map((k) => {
+    const v = (d.coverage_by_section && d.coverage_by_section[k]) || 0;
+    return `<div class="bar bar--${k}"><div class="bar__head"><span>${esc(labels[k])}</span><span>${pct(v)}</span></div>
+      <div class="bar__track"><div class="bar__fill" style="width:${Math.round(v * 100)}%"></div></div></div>`;
+  }).join('');
+  return `<div class="coverblock">
+    <div class="cover__overall"><span class="cover__num">${pct(d.coverage)}</span><span class="cover__of">of the exam covered</span></div>
+    <div class="bars">${bars}</div></div>`;
+}
+
+function nextBlock(d) {
+  const bn = d.best_next;
+  if (!bn) return '<div class="nextblock"><div class="deco"></div><div class="nextblock__eyebrow">Study this next</div><div class="nextblock__title">All caught up</div></div>';
+  const state = bn.covered ? `${pct(bn.mastery)} recalled` : 'not studied yet';
+  return `<div class="nextblock"><div class="deco"></div>
+    <div class="nextblock__eyebrow">Study this next</div>
+    <div class="nextblock__title">${esc(bn.name)}</div>
+    <div class="nextblock__meta">
+      <span class="tag tag--accent">${esc((d.section_labels && d.section_labels[bn.section]) || bn.section)}</span>
+      <span class="tag">${esc(state)}</span>
+    </div></div>`;
+}
+
+function render() {
+  const d = window.__VANTAGE__ || MOCK;
+  const app = document.getElementById('app');
+  const memAbstain = `Study at least ${d.thresholds.memory_cards} cards to see this. You've studied ${d.memory.n}.`;
+  const perfAbstain = `Answer at least ${d.thresholds.performance_outcomes} new questions to see this. You've answered ${d.performance.n}.`;
+  app.innerHTML = `
+  <header class="masthead">
+    <div class="masthead__deco"><span class="c1"></span><span class="c2"></span><span class="sq"></span></div>
+    <div class="masthead__row">
+      <div><div class="brand__mark">Vantage<span class="dot">.</span></div></div>
+      <div class="toolbar">
+        <button class="btn btn--ghost" onclick="vpy('refresh')">${svg('refresh')} Refresh</button>
+        <button class="btn btn--primary" onclick="vpy('back')">${svg('back')} Back to Anki</button>
+      </div>
+    </div>
+    <div class="chips">
+      <span class="chip">${svg('grid')} ${pct(d.coverage)} of the exam covered</span>
+      <span class="chip">${svg('bolt')} ${d.n_reviews} reviews</span>
+      <span class="chip">${svg('layers')} ${d.n_cards_seen} cards studied</span>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="scores">
+      ${pctCard('memory', 'brain', 'Memory', 'how well you remember your cards', d.memory, memAbstain)}
+      ${pctCard('perf', 'target', 'Performance', 'how well you apply it to new questions', d.performance, perfAbstain)}
+      ${readinessCard(d.readiness, d.section_labels, d)}
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section__head"><div class="section__title">Exam coverage</div></div>
+    <div class="coverage">${coverageBlock(d)}${nextBlock(d)}</div>
+  </section>
+
+  <div class="footmeta"><span>Updated ${esc(d.updated)}</span></div>`;
+}
+
+// Bridge to the Anki add-on (no-op in standalone preview).
+window.vpy = function (cmd) { try { pycmd('vantage:' + cmd); } catch (e) { console.log('vpy', cmd); } };
+
+const MOCK = {
+  coverage: 0.79, coverage_by_section: { chem_phys: 1.0, bio_biochem: 1.0, psych_soc: 0.42 },
+  outline_version: 'aamc-approx-2023.v1', n_reviews: 240, n_cards_seen: 72, ai_used: false, updated: '2026-07-01 08:00',
+  section_labels: { chem_phys: 'Chem/Phys', bio_biochem: 'Bio/Biochem', psych_soc: 'Psych/Soc' },
+  thresholds: { memory_cards: 20, performance_outcomes: 20, reviews: 200, coverage: 0.5 },
+  best_next: { concept_id: '8B', name: 'Social thinking', section: 'psych_soc', weight: 3, mastery: 0.0, covered: false, priority: 3.0 },
+  memory: { abstained: false, point: 0.89, low: 0.87, high: 0.90, how_sure: 'medium', n: 72, reasons: [] },
+  performance: { abstained: false, point: 0.66, low: 0.57, high: 0.73, how_sure: 'medium', n: 96, reasons: [] },
+  readiness: { abstained: false, point: 376, low: 368, high: 381, how_sure: 'medium', n: 240, cars_modeled: false,
+    sections: { chem_phys: { point: 124, low: 120, high: 128 }, bio_biochem: { point: 126, low: 122, high: 129 }, psych_soc: { point: 125, low: 121, high: 128 } }, reasons: [] },
+};
+
+document.addEventListener('DOMContentLoaded', render);
+</script></body></html>

@@ -1302,6 +1302,11 @@ open class DeckPicker :
                 showImportDialog()
                 return true
             }
+            R.id.action_vantage_dashboard -> {
+                Timber.i("DeckPicker:: Vantage dashboard pressed")
+                startActivity(VantageDashboardActivity.getIntent(this))
+                return true
+            }
             R.id.action_check_database -> {
                 Timber.i("DeckPicker:: Check database button pressed")
                 showDatabaseErrorDialog(DatabaseErrorDialogType.DIALOG_CONFIRM_DATABASE_CHECK)

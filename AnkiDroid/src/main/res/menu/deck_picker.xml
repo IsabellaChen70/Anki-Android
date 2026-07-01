@@ -64,6 +64,10 @@
         android:menuCategory="secondary"
         android:title="@string/menu_import"/>
     <item
+        android:id="@+id/action_vantage_dashboard"
+        android:menuCategory="secondary"
+        android:title="@string/menu_vantage_dashboard"/>
+    <item
         android:id="@+id/action_export_collection"
         android:menuCategory="secondary" />
 </menu>
