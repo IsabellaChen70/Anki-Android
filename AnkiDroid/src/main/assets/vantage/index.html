@@ -1,4 +1,6 @@
-<!doctype html><html lang='en'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet"></head><body><style>/* Vantage dashboard. Flat Design system (no shadows, color blocks, Outfit). */
+<!doctype html><html lang='en'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet"></head><body><style>/* Copyright: Ankitects Pty Ltd and contributors
+   License: GNU AGPL, version 3 or later; http://www.gnu.org/licenses/agpl.html */
+/* Vantage dashboard. Flat Design system (no shadows, color blocks, Outfit). */
 
 :root {
   --bg: #ffffff;
@@ -54,21 +56,22 @@ html, body {
 .masthead__row { position: relative; display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
 .brand__mark { font-size: 2.6rem; font-weight: 800; letter-spacing: -0.03em; line-height: 1; }
 .brand__mark .dot { color: var(--primary); }
-.brand__tag { margin-top: 0.4rem; color: #d1d5db; font-weight: 500; letter-spacing: 0.01em; }
 
-.toolbar { display: flex; gap: 0.6rem; }
+.toolbar { display: flex; gap: 0.6rem; flex-wrap: wrap; }
 .btn {
   font-family: inherit; font-weight: 600; font-size: 0.9rem; border: 0; cursor: pointer;
   border-radius: var(--radius-md); padding: 0 1.1rem; height: 2.75rem;
   display: inline-flex; align-items: center; gap: 0.5rem; white-space: nowrap;
-  transition: all 200ms ease;
+  transition: background-color 150ms ease;
 }
 .btn svg { width: 1.05rem; height: 1.05rem; flex: none; }
 .btn:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--primary); }
 .btn--primary { background: var(--primary); color: #fff; }
-.btn--primary:hover { background: var(--primary-600); transform: scale(1.05); }
+.btn--primary:hover { background: var(--primary-600); }
 .btn--ghost { background: rgba(255,255,255,0.12); color: #fff; }
-.btn--ghost:hover { background: rgba(255,255,255,0.22); transform: scale(1.05); }
+.btn--ghost:hover { background: rgba(255,255,255,0.22); }
+.btn--practice { background: #7c3aed; color: #fff; }
+.btn--practice:hover { background: #6d28d9; }
 
 /* meta chips */
 .chips { position: relative; display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.5rem; }
@@ -78,8 +81,6 @@ html, body {
   padding: 0.4rem 0.8rem; border-radius: 9999px;
 }
 .chip svg { width: 1rem; height: 1rem; }
-.chip--on { background: var(--secondary); color: #052e21; font-weight: 600; }
-.chip--off { background: rgba(255,255,255,0.1); }
 
 /* ---------- Section scaffolding ---------- */
 .section { padding: 2rem 2.5rem 0; }
@@ -91,25 +92,17 @@ html, body {
 .scores { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
 .card {
   border-radius: var(--radius-lg); padding: 1.75rem; border: 0;
-  transition: transform 200ms ease, background-color 200ms ease;
 }
-.card:hover { transform: scale(1.02); }
 .card--memory { background: var(--primary-50); }
-.card--memory:hover { background: #dbeafe; }
 .card--perf { background: var(--secondary-50); }
-.card--perf:hover { background: #d1fae5; }
 .card--ready { background: var(--accent-50); }
-.card--ready:hover { background: #fef3c7; }
 .card--abstain { background: var(--muted); }
-.card--abstain:hover { background: var(--muted-200); }
 
 .card__top { display: flex; align-items: center; gap: 0.85rem; margin-bottom: 1.1rem; }
 .iconwrap {
   width: 3.25rem; height: 3.25rem; border-radius: 9999px; background: #fff;
   display: grid; place-items: center; flex: none;
-  transition: transform 200ms ease;
 }
-.card:hover .iconwrap { transform: scale(1.1); }
 .iconwrap svg { width: 1.6rem; height: 1.6rem; stroke-width: 2.4; }
 .i-memory { color: var(--primary-600); }
 .i-perf { color: var(--secondary-600); }
@@ -126,25 +119,29 @@ html, body {
 .metric--ready .metric__num { color: var(--accent-600); }
 
 .range { margin-top: 0.55rem; font-weight: 600; color: var(--fg); }
-.range .muted { color: var(--gray-500); font-weight: 500; }
-
-.badge {
-  display: inline-flex; align-items: center; gap: 0.35rem; margin-top: 1rem;
-  font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em;
-  padding: 0.3rem 0.7rem; border-radius: 9999px;
-}
-.badge--high { background: var(--secondary); color: #052e21; }
-.badge--medium { background: var(--accent); color: #442c04; }
-.badge--low { background: var(--muted-200); color: #374151; }
-.badge--insufficient { background: #1f2937; color: #fff; }
 
 .reasons { list-style: none; margin-top: 1.1rem; display: grid; gap: 0.4rem; }
 .reasons li { position: relative; padding-left: 1rem; color: #374151; font-size: 0.9rem; font-weight: 400; }
 .reasons li::before { content: ""; position: absolute; left: 0; top: 0.55rem; width: 0.4rem; height: 0.4rem; border-radius: 9999px; background: currentColor; opacity: 0.4; }
 
+/* confidence ("how sure") + coverage, shown on every score */
+.cardmeta { margin-top: 1.1rem; display: grid; gap: 0.35rem; }
+.conf { font-weight: 700; font-size: 0.9rem; }
+.conf--high { color: var(--secondary-600); }
+.conf--medium { color: var(--accent-600); }
+.conf--low { color: #6b7280; }
+.conf--insufficient { color: #374151; }
+.cover { color: var(--gray-500); font-weight: 500; font-size: 0.85rem; }
+
 /* abstain state */
 .abstain__title { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.02em; color: var(--accent-600); }
 .abstain__lead { margin-top: 0.4rem; color: #374151; font-weight: 500; }
+.card__cta {
+  margin-top: 1.1rem; font-family: inherit; font-weight: 700; font-size: 0.9rem; color: #fff;
+  background: #7c3aed; border: 0; border-radius: var(--radius-md); padding: 0.6rem 1.1rem; cursor: pointer;
+}
+.card__cta:hover { background: #6d28d9; }
+.card__cta:focus-visible { outline: 2px solid #7c3aed; outline-offset: 2px; }
 
 /* ---------- Coverage ---------- */
 .coverage { display: grid; grid-template-columns: 1.1fr 1fr; gap: 1.25rem; align-items: start; }
@@ -169,6 +166,34 @@ html, body {
 .tag { background: rgba(255,255,255,0.12); color: #fff; font-weight: 600; font-size: 0.8rem; padding: 0.35rem 0.75rem; border-radius: 9999px; }
 .tag--accent { background: var(--accent); color: #442c04; }
 
+/* "where to study" resource pointers inside the next-topic block */
+.nextblock__where { position: relative; margin-top: 1.1rem; padding-top: 0.9rem; border-top: 1px solid rgba(255,255,255,0.14); display: grid; gap: 0.5rem; }
+.where__row { display: flex; gap: 0.6rem; align-items: baseline; font-size: 0.9rem; color: #e5e7eb; font-weight: 500; }
+.where__k { flex: none; min-width: 4.75rem; text-transform: uppercase; letter-spacing: 0.06em; font-size: 0.7rem; color: #9ca3af; font-weight: 600; }
+.where__val { display: flex; flex-direction: column; gap: 0.2rem; min-width: 0; }
+.where__row--book { align-items: flex-start; }
+.where__book { font-weight: 600; color: #e5e7eb; }
+.where__chapter { font-size: 0.82rem; color: #cbd5e1; }
+.bookpick { flex: none; margin-left: auto; align-self: flex-start; max-width: 11rem;
+  background: rgba(255,255,255,0.08); color: #e5e7eb; font: inherit; font-size: 0.78rem; font-weight: 600;
+  border: 1px solid rgba(255,255,255,0.18); border-radius: 8px; padding: 0.28rem 0.5rem; cursor: pointer; }
+.bookpick:hover { border-color: rgba(255,255,255,0.4); }
+.where__links { display: flex; flex-wrap: wrap; gap: 0.35rem 0.55rem; align-items: baseline; }
+.where__sep { color: #6b7280; }
+.where__cap { font-size: 0.76rem; color: #9ca3af; font-weight: 500; }
+.nextblock__where a { color: #93c5fd; font-weight: 600; text-decoration: none; font-size: 0.9rem; }
+.nextblock__where a:hover { text-decoration: underline; }
+
+/* pager: step through the ranked next topics */
+.nextblock__head { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.nextpager { display: flex; align-items: center; gap: 0.5rem; flex: none; }
+.nextpager__count { font-size: 0.78rem; font-weight: 600; color: #9ca3af; font-variant-numeric: tabular-nums; }
+.nextnav { display: inline-flex; align-items: center; justify-content: center; width: 2rem; height: 2rem; border: 0; border-radius: 9999px; background: rgba(255,255,255,0.12); color: #fff; cursor: pointer; }
+.nextnav:hover { background: rgba(255,255,255,0.22); }
+.nextnav:disabled { opacity: 0.35; cursor: default; }
+.nextnav svg { width: 1rem; height: 1rem; }
+.nextnav:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(255,255,255,0.5); }
+
 /* ---------- readiness sections mini-bars ---------- */
 .subsections { margin-top: 1.25rem; display: grid; gap: 0.95rem; }
 .subrow { display: flex; align-items: baseline; justify-content: space-between; gap: 0.75rem; }
@@ -177,35 +202,1180 @@ html, body {
 .subrow__val { font-weight: 800; font-size: 1.35rem; font-variant-numeric: tabular-nums; color: var(--accent-600); }
 .subrow__range { color: var(--gray-500); font-weight: 500; font-size: 0.85rem; }
 
-/* ---------- footer note ---------- */
-.note { margin: 2rem 2.5rem 0; background: var(--muted); border-radius: var(--radius-lg); padding: 1.25rem 1.5rem; display: flex; gap: 0.85rem; align-items: flex-start; }
-.note svg { width: 1.25rem; height: 1.25rem; color: var(--gray-500); flex: none; margin-top: 0.1rem; }
-.note p { color: #374151; font-weight: 500; font-size: 0.92rem; }
-.note b { font-weight: 700; color: var(--fg); }
+/* ---------- Study & practice (per-section launcher) ---------- */
+.studygrid { display: grid; gap: 0.75rem; }
+.srow {
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  background: var(--muted); border-radius: var(--radius-lg); padding: 1.05rem 1.35rem;
+  border-left: 4px solid var(--muted-200);
+}
+.srow--chem_phys { border-left-color: var(--primary); }
+.srow--bio_biochem { border-left-color: var(--secondary); }
+.srow--psych_soc { border-left-color: var(--accent); }
+.srow--cars { border-left-color: #7c3aed; }
+.srow--all { background: var(--gray-900); color: #fff; border-left-color: var(--primary); }
+.srow__meta { min-width: 0; }
+.srow__name { font-weight: 700; font-size: 1.05rem; letter-spacing: -0.01em; }
+.srow__sub { color: var(--gray-500); font-size: 0.85rem; font-weight: 500; margin-top: 2px; }
+.srow--all .srow__sub { color: #9ca3af; }
+.srow__actions { display: flex; gap: 0.5rem; flex: none; flex-wrap: wrap; justify-content: flex-end; }
+.btn--study { background: var(--primary); color: #fff; }
+.btn--study:hover { background: var(--primary-600); }
+.btn--reason { background: #7c3aed; color: #fff; }
+.btn--reason:hover { background: #6d28d9; }
+.srow .btn { height: 2.55rem; }
 
-.footmeta { margin: 1.25rem 2.5rem 0; color: var(--gray-500); font-size: 0.82rem; font-weight: 500; display: flex; gap: 1rem; flex-wrap: wrap; }
+/* ---------- exam countdown + daily plan ---------- */
+.plancard { background: var(--primary-50); color: var(--fg); border-radius: var(--radius-lg); padding: 1.75rem; position: relative; overflow: hidden; }
+.plan__eyebrow { text-transform: uppercase; letter-spacing: 0.12em; font-weight: 600; font-size: 0.78rem; color: var(--gray-500); }
+.plan__count { font-size: 1.7rem; font-weight: 800; letter-spacing: -0.02em; margin-top: 0.35rem; color: var(--fg); }
+.plan__days { font-size: 2.6rem; color: var(--primary-600); }
+.plan__daterow { margin-top: 0.55rem; display: flex; align-items: center; gap: 0.75rem; color: var(--gray-500); font-weight: 600; font-size: 0.9rem; }
+.plan__setrow { margin-top: 0.55rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+.plan__title { font-size: 1.15rem; font-weight: 700; }
+.datein { font-family: inherit; font-weight: 600; font-size: 0.9rem; border: 1px solid var(--border); border-radius: var(--radius-md); padding: 0.5rem 0.7rem; background: #fff; color: var(--fg); color-scheme: light; cursor: pointer; }
+.plan__grid { margin-top: 1.4rem; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+.plan__item { display: flex; align-items: baseline; gap: 0.6rem; background: #fff; border-radius: var(--radius-md); padding: 0.95rem 1.1rem; }
+.plan__num { font-size: 2rem; font-weight: 800; color: var(--fg); font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
+.plan__lbl { font-weight: 600; font-size: 0.9rem; color: var(--fg); display: flex; flex-direction: column; }
+.plan__hint { color: var(--gray-500); font-weight: 500; font-size: 0.78rem; margin-top: 2px; }
+.plan__note { margin-top: 1.15rem; color: var(--gray-500); font-size: 0.85rem; font-weight: 500; }
+
+/* ---------- pacing coach ---------- */
+.pacelist { display: grid; gap: 0.7rem; }
+.pacerow { display: grid; grid-template-columns: 8rem 1fr auto; align-items: baseline; gap: 1rem; }
+.pacerow__sec { font-weight: 700; font-size: 0.95rem; }
+.pacerow__you { font-weight: 800; font-variant-numeric: tabular-nums; }
+.pacerow__you--ok { color: var(--secondary-600); }
+.pacerow__you--off { color: var(--accent-600); }
+.pacerow__t { color: var(--gray-500); font-size: 0.85rem; font-weight: 500; }
+.pacerow__verdict { font-size: 0.85rem; font-weight: 600; text-align: right; }
+.pacerow__verdict--ok { color: var(--secondary-600); }
+.pacerow__verdict--off { color: var(--accent-600); }
+
+/* ---------- score trajectory ---------- */
+.trajstats { display: flex; gap: 1.75rem; flex-wrap: wrap; }
+.trajstat { display: flex; flex-direction: column; }
+.trajstat__num { font-size: 1.7rem; font-weight: 800; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+.trajstat__lbl { font-size: 0.78rem; color: var(--gray-500); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+.targetin { font-family: inherit; font-weight: 600; font-size: 0.9rem; border: 1px solid var(--border); border-radius: var(--radius-md); padding: 0.4rem 0.6rem; width: 6rem; color: var(--fg); }
+
+/* ---------- learn first vs ready to practice ---------- */
+.plansplit { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+.plancol { background: var(--muted); border-radius: var(--radius-lg); padding: 1.4rem 1.5rem; border-left: 4px solid var(--muted-200); }
+.plancol--ready { border-left-color: var(--secondary); }
+.plancol__h { font-weight: 700; font-size: 0.98rem; margin-bottom: 0.95rem; }
+.planchips { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.planchip { background: #fff; border: 1px solid var(--border); border-radius: 9999px; padding: 0.4rem 0.85rem; font-size: 0.85rem; font-weight: 600; }
+.planempty { color: var(--gray-500); font-weight: 500; font-size: 0.9rem; }
+
+/* ---------- memory vs. real performance (two-bar comparison) ---------- */
+.calibsummary { font-size: 1.05rem; line-height: 1.5; margin-bottom: 1.25rem; }
+.calibsummary b { font-weight: 700; }
+.calibverdict--ok b { color: var(--secondary-600); }
+.calibverdict--off b { color: var(--accent-600); }
+.calib { display: grid; gap: 0.7rem; }
+.calibbar { display: grid; grid-template-columns: 9rem 1fr 3rem; align-items: center; gap: 0.8rem; }
+.calibbar__k { font-size: 0.8rem; color: var(--gray-500); font-weight: 600; }
+.calibbar__track { height: 0.85rem; background: var(--muted-200); border-radius: 9999px; overflow: hidden; }
+.calibbar__fill { height: 100%; border-radius: 9999px; }
+.calibbar__fill--pred { background: var(--primary); }
+.calibbar__fill--obs { background: var(--secondary); }
+.calibbar__v { font-size: 0.85rem; font-weight: 700; font-variant-numeric: tabular-nums; text-align: right; }
+
+/* ---------- readiness partial-composite note ---------- */
+.readypartial { margin-top: 0.9rem; color: var(--gray-500); font-weight: 500; font-size: 0.82rem; }
+
+/* ---------- fluency illusion (recall vs applying it, per concept) ---------- */
+.flulist { display: grid; gap: 1.15rem; }
+.flurow { display: grid; gap: 0.45rem; }
+.flurow__head { display: flex; align-items: baseline; justify-content: space-between; gap: 0.75rem; }
+.flurow__name { font-weight: 700; font-size: 1rem; letter-spacing: -0.01em; }
+.fluchip { flex: none; background: #fff; border: 1px solid var(--border); color: var(--gray-500); font-weight: 600; font-size: 0.75rem; padding: 0.2rem 0.6rem; border-radius: 9999px; }
+.flubar { display: grid; grid-template-columns: 6.5rem 1fr 3rem; align-items: center; gap: 0.8rem; }
+.flubar__k { font-size: 0.8rem; color: var(--gray-500); font-weight: 600; }
+.flubar__track { height: 0.75rem; background: var(--muted-200); border-radius: 9999px; overflow: hidden; }
+.flubar__fill { height: 100%; border-radius: 9999px; }
+.flubar__fill--rec { background: var(--primary); }
+.flubar__fill--app { background: var(--secondary); }
+.flubar__v { font-size: 0.85rem; font-weight: 700; font-variant-numeric: tabular-nums; text-align: right; }
+
+/* ---------- insights grid (arranges the analysis panels into columns) ---------- */
+/* Two columns on a phone, three on a wide screen, one only on the smallest
+   screens. This turns a long vertical stack of six panels into a compact grid. */
+.insights {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  padding: 2rem 2.5rem 0;
+}
+/* Each panel becomes a plain grid cell: the grid gap sets the spacing, so drop
+   the section's own outer padding and let the cell shrink cleanly in its track. */
+.insights .section {
+  padding: 0;
+  min-width: 0;
+  container-type: inline-size;
+}
+/* In a narrow column a panel's bar rows would run past the card edge, so once
+   the cell gets tight, stack each row (label over its bar). Every panel and its
+   abstain state stays fully readable instead of clipped. */
+@container (max-width: 460px) {
+  .insights .pacerow { grid-template-columns: 1fr; gap: 0.2rem; }
+  .insights .pacerow__verdict { text-align: left; }
+}
+@container (max-width: 380px) {
+  .insights .calibbar,
+  .insights .flubar { grid-template-columns: 1fr auto; gap: 0.2rem 0.6rem; }
+  .insights .calibbar__k,
+  .insights .flubar__k { grid-column: 1 / -1; }
+}
+
+/* ---------- give-up rule (quiet footnote) ---------- */
+.giveup { margin: 2rem auto 0; padding: 0 2.5rem; max-width: 64rem; text-align: center; color: var(--gray-500); font-weight: 500; font-size: 0.9rem; }
+
+.footmeta { margin: 1.25rem 2.5rem 0; color: var(--gray-500); font-size: 0.82rem; font-weight: 500; display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
 
 @media (max-width: 900px) {
   .scores { grid-template-columns: 1fr; }
   .coverage { grid-template-columns: 1fr; }
+  .plansplit { grid-template-columns: 1fr; }
 }
-</style><div class="app" id="app"></div><script>window.__VANTAGE__ = {"coverage": 0.7931034482758621, "coverage_by_section": {"chem_phys": 1.0, "bio_biochem": 1.0, "psych_soc": 0.41935483870967744}, "outline_version": "aamc-approx-2023.v1", "n_reviews": 240, "n_cards_seen": 72, "ai_used": false, "updated": "2026-07-01 09:36", "best_next": {"concept_id": "8B", "name": "Social thinking", "section": "psych_soc", "weight": 3.0, "mastery": 0.0, "covered": false, "priority": 3.0}, "section_labels": {"chem_phys": "Chem/Phys", "bio_biochem": "Bio/Biochem", "psych_soc": "Psych/Soc"}, "thresholds": {"memory_cards": 20, "performance_outcomes": 20, "reviews": 200, "coverage": 0.5}, "memory": {"abstained": false, "how_sure": "medium", "n": 72, "reasons": ["mean retrievability 89% over 72 seen cards", "range width 3%"], "point": 0.889, "low": 0.873, "high": 0.905}, "performance": {"abstained": false, "how_sure": "medium", "n": 96, "reasons": ["63/96 application items correct (66%)", "range width 16%"], "point": 0.656, "low": 0.573, "high": 0.731}, "readiness": {"abstained": false, "how_sure": "medium", "n": 240, "reasons": ["partial composite over 3 of 3 science sections", "weighted coverage 79%", "weakest modeled section: Chem/Phys (20/32 items)"], "cars_modeled": false, "sections": {"chem_phys": {"point": 124.3, "low": 120.1, "high": 127.8}, "bio_biochem": {"point": 126.0, "low": 122.1, "high": 129.1}, "psych_soc": {"point": 125.2, "low": 121.2, "high": 128.5}}, "point": 375.5, "low": 368.2, "high": 381.1}};</script><script>/* Vantage dashboard renderer. Reads window.__VANTAGE__ (injected by the add-on),
-   falling back to MOCK for standalone preview. Pure DOM, no framework. */
+
+@media (max-width: 560px) {
+  .masthead { padding: 1.5rem 1.25rem 1.25rem; }
+  .brand__mark { font-size: 2.1rem; }
+  .masthead__row { flex-direction: column; align-items: stretch; }
+  .toolbar { width: 100%; display: grid; grid-template-columns: 1fr; gap: 0.5rem; margin-top: 0.25rem; }
+  .toolbar .btn { width: 100%; min-width: 0; justify-content: center; height: 2.7rem; padding: 0 0.5rem; font-size: 0.9rem; }
+  .chips { margin-top: 1.1rem; }
+  .section { padding: 1.5rem 1.25rem 0; }
+  .insights { padding: 1.5rem 1.25rem 0; grid-template-columns: 1fr; }
+  .card { padding: 1.35rem; }
+  .srow { flex-direction: column; align-items: stretch; gap: 0.75rem; }
+  .srow__actions { justify-content: stretch; }
+  .srow__actions .btn { flex: 1; min-width: 0; justify-content: center; }
+  .calibbar { grid-template-columns: 6.5rem 1fr 2.5rem; gap: 0.5rem; }
+  .flubar { grid-template-columns: 5.5rem 1fr 2.5rem; gap: 0.5rem; }
+  .plan__grid { grid-template-columns: 1fr; }
+  .giveup { padding: 0 1.25rem; }
+  .footmeta { margin-left: 1.25rem; margin-right: 1.25rem; }
+}
+
+/* Insights: one full-width column on phones (<=560px, set above so panels are
+   readable instead of squished), two columns for tablets, three on desktop. */
+@media (min-width: 960px) {
+  .insights { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+/* Copyright: Ankitects Pty Ltd and contributors
+   License: GNU AGPL, version 3 or later; http://www.gnu.org/licenses/agpl.html */
+/* Vantage CARS practice. Flat Design, shares the dashboard's tokens and adds a
+   distinct section accent for CARS so it reads as its own part of the exam. */
+:root {
+  --fg: #111827;
+  --gray-600: #4b5563;
+  --gray-500: #6b7280;
+  --gray-400: #9ca3af;
+  --gray-200: #e5e7eb;
+  --muted: #f3f4f6;
+  --bg: #ffffff;
+  --cars: #7c3aed;
+  --cars-600: #6d28d9;
+  --cars-50: #f5f3ff;
+  --ok: #059669;
+  --ok-50: #ecfdf5;
+  --no: #dc2626;
+  --no-50: #fef2f2;
+  --radius: 8px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  background: var(--bg); color: var(--fg);
+  font-family: 'Outfit', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+.wrap { max-width: 72rem; margin: 0 auto; padding: 0 2rem 4rem; }
+
+/* top bar */
+.top { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; padding: 1.75rem 0 1.25rem; flex-wrap: wrap; }
+.top__title { font-weight: 800; font-size: 1.5rem; letter-spacing: -0.02em; }
+.top__right { display: flex; align-items: baseline; gap: 1.25rem; }
+.progress { color: var(--gray-500); font-weight: 600; font-size: 0.9rem; font-variant-numeric: tabular-nums; }
+.linkbtn { font-family: inherit; font-weight: 600; font-size: 0.9rem; color: var(--gray-500); background: none; border: 0; cursor: pointer; padding: 0.3rem 0; }
+.linkbtn:hover { color: var(--fg); }
+.linkbtn:focus-visible { outline: 2px solid var(--cars); outline-offset: 3px; border-radius: 4px; }
+
+/* progress bar */
+.pbar { height: 0.3rem; background: var(--gray-200); border-radius: 999px; overflow: hidden; }
+.pbar__fill { height: 100%; background: var(--cars); border-radius: 999px; transition: width 250ms ease; }
+
+/* two-column reading layout */
+.grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 2.25rem; margin-top: 1.75rem; align-items: start; }
+.passage__label { font-weight: 700; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.09em; color: var(--gray-400); margin-bottom: 0.8rem; }
+.passage__body p { max-width: 40rem; line-height: 1.72; margin-bottom: 1.05rem; font-size: 1.02rem; color: #1f2937; }
+
+/* question card */
+.qcard { background: var(--muted); border-radius: var(--radius); padding: 1.6rem; position: sticky; top: 1rem; }
+.qcard__stem { font-weight: 700; font-size: 1.12rem; line-height: 1.45; margin-bottom: 1.2rem; }
+.choices { display: grid; gap: 0.6rem; }
+.choice {
+  display: flex; gap: 0.7rem; align-items: flex-start; text-align: left; width: 100%;
+  font-family: inherit; font-size: 0.98rem; font-weight: 500; color: var(--fg);
+  background: var(--bg); border: 2px solid var(--gray-200); border-radius: var(--radius);
+  padding: 0.85rem 1rem; cursor: pointer; transition: border-color 120ms ease, background-color 120ms ease;
+}
+.choice:hover { border-color: var(--cars); }
+.choice:focus-visible { outline: 2px solid var(--cars); outline-offset: 2px; }
+.choice[aria-pressed="true"] { border-color: var(--cars); background: var(--cars-50); }
+.choice__key { font-weight: 800; color: var(--cars-600); flex: none; min-width: 1rem; }
+.choice[disabled] { cursor: default; }
+.choice--correct { border-color: var(--ok); background: var(--ok-50); }
+.choice--correct .choice__key { color: var(--ok); }
+.choice--wrong { border-color: var(--no); background: var(--no-50); }
+.choice--wrong .choice__key { color: var(--no); }
+
+/* feedback + action */
+.feedback { margin-top: 1.15rem; font-weight: 700; font-size: 0.95rem; }
+.feedback--ok { color: var(--ok); }
+.feedback--no { color: var(--no); }
+.explain { margin-top: 0.5rem; color: var(--gray-600); font-weight: 400; font-size: 0.92rem; line-height: 1.55; }
+.actions { margin-top: 1.4rem; display: flex; justify-content: flex-end; }
+.pbtn {
+  font-family: inherit; font-weight: 700; font-size: 0.95rem; border: 0; border-radius: var(--radius);
+  padding: 0 1.35rem; height: 2.8rem; cursor: pointer; background: var(--cars); color: #fff;
+  transition: background-color 120ms ease;
+}
+.pbtn:hover { background: var(--cars-600); }
+.pbtn:focus-visible { outline: 2px solid var(--cars); outline-offset: 3px; }
+.pbtn[disabled] { background: var(--gray-200); color: var(--gray-400); cursor: default; }
+.pbtn--ghost { background: var(--bg); color: var(--fg); border: 2px solid var(--gray-200); }
+.pbtn--ghost:hover { background: var(--muted); border-color: var(--gray-400); }
+
+/* results */
+.summary { margin-top: 2rem; background: var(--muted); border-radius: var(--radius); padding: 2.25rem; }
+.summary__score { font-size: 2.6rem; font-weight: 800; letter-spacing: -0.02em; }
+.summary__sub { color: var(--gray-500); font-weight: 500; margin-top: 0.35rem; }
+.summary__actions { margin-top: 1.6rem; display: flex; gap: 0.8rem; flex-wrap: wrap; }
+
+/* confidence chips (metacognition: mark how sure before checking) */
+.confrow { display: flex; align-items: center; gap: 0.75rem; margin-top: 1.1rem; flex-wrap: wrap; }
+.confrow__label { font-size: 0.85rem; color: var(--gray-500, #6b7280); font-weight: 600; }
+.confchips { display: flex; gap: 0.4rem; }
+.conf { font-family: inherit; font-weight: 600; font-size: 0.85rem; border: 1px solid var(--gray-200, #e5e7eb); background: var(--bg, #fff); color: var(--fg, #111827); border-radius: 9999px; padding: 0.4rem 0.9rem; cursor: pointer; }
+.conf--on { background: var(--fg, #111827); color: #fff; border-color: var(--fg, #111827); }
+.conf:disabled { opacity: 0.55; cursor: default; }
+
+/* miss reason (how you lose points) */
+.missrow { margin-top: 1.1rem; padding: 1rem 1.1rem; background: var(--accent-50, #fffbeb); border-radius: var(--radius, 8px); }
+.missrow__q { font-weight: 700; font-size: 0.92rem; margin-bottom: 0.65rem; }
+.missbtns { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+.missbtn { font-family: inherit; font-weight: 600; font-size: 0.85rem; border: 1px solid var(--gray-200, #e5e7eb); background: var(--bg, #fff); color: var(--fg, #111827); border-radius: 8px; padding: 0.5rem 0.85rem; cursor: pointer; }
+.missbtn:hover { background: var(--fg, #111827); color: #fff; border-color: var(--fg, #111827); }
+
+@media (max-width: 820px) {
+  .grid { grid-template-columns: 1fr; gap: 1.5rem; }
+  .qcard { position: static; }
+}
+</style><div class="app" id="app"></div><script>/* Copyright: Ankitects Pty Ltd and contributors
+   License: GNU AGPL, version 3 or later; http://www.gnu.org/licenses/agpl.html */
+/* Vantage on-device scoring (mobile). A faithful port of the pure Python core
+   (anki.vantage scoring + outline + collect) so the phone computes the same
+   honest scores from its OWN collection instead of showing a baked snapshot.
+
+   The Kotlin Activity extracts raw (tags, retrievability) per card plus the
+   graded-review count from the phone's collection and calls
+   window.vantageComputeFromRaw(raw); the result feeds the same renderer the
+   desktop uses. Memory is real; performance and readiness abstain until there
+   are exam-style practice items, exactly as on desktop. */
+(function () {
+  const OUTLINE = {
+    version: 'aamc-approx-2023.v1',
+    sections: { chem_phys: 'Chem/Phys', bio_biochem: 'Bio/Biochem', psych_soc: 'Psych/Soc' },
+    concepts: [
+      { id: '4A', section: 'chem_phys', weight: 3, name: 'Translational motion, forces, work, energy, equilibrium', aliases: ['kinematics', 'forces', 'work_energy', 'equilibrium', 'mechanics'] },
+      { id: '4B', section: 'chem_phys', weight: 2, name: 'Importance of fluids for circulation of blood, gas movement', aliases: ['fluids', 'hydrostatics', 'gases', 'circulation'] },
+      { id: '4C', section: 'chem_phys', weight: 2, name: 'Electrochemistry and electrical circuits', aliases: ['electrochemistry', 'circuits', 'electrostatics'] },
+      { id: '4D', section: 'chem_phys', weight: 1, name: 'How light and sound interact with matter', aliases: ['optics', 'light', 'sound', 'waves'] },
+      { id: '4E', section: 'chem_phys', weight: 3, name: 'Atoms, nuclear decay, electronic structure', aliases: ['atomic_structure', 'periodic_table', 'nuclear', 'quantum'] },
+      { id: '5A', section: 'chem_phys', weight: 2, name: 'Unique nature of water and its solutions', aliases: ['water', 'solutions', 'acid_base', 'ph', 'buffers'] },
+      { id: '5B', section: 'chem_phys', weight: 3, name: 'Nature of molecules and intermolecular interactions', aliases: ['bonding', 'intermolecular', 'molecular_structure'] },
+      { id: '5C', section: 'chem_phys', weight: 2, name: 'Separation and purification methods', aliases: ['chromatography', 'distillation', 'separation', 'spectroscopy'] },
+      { id: '5D', section: 'chem_phys', weight: 4, name: 'Structure, function, and reactivity of biological molecules', aliases: ['organic_chemistry', 'functional_groups', 'reactions', 'stereochemistry'] },
+      { id: '5E', section: 'chem_phys', weight: 3, name: 'Principles of chemical thermodynamics and kinetics', aliases: ['thermodynamics', 'kinetics', 'enthalpy', 'entropy', 'gibbs'] },
+      { id: '1A', section: 'bio_biochem', weight: 5, name: 'Structure and function of proteins and amino acids', aliases: ['amino_acids', 'proteins', 'enzymes', 'protein_structure'] },
+      { id: '1B', section: 'bio_biochem', weight: 3, name: 'Transmission of genetic information from gene to protein', aliases: ['transcription', 'translation', 'central_dogma', 'gene_expression'] },
+      { id: '1C', section: 'bio_biochem', weight: 2, name: 'Transmission of heritable information and its variation', aliases: ['genetics', 'inheritance', 'evolution', 'meiosis'] },
+      { id: '1D', section: 'bio_biochem', weight: 4, name: 'Principles of bioenergetics and fuel molecule metabolism', aliases: ['metabolism', 'bioenergetics', 'glycolysis', 'krebs', 'oxidative_phosphorylation'] },
+      { id: '2A', section: 'bio_biochem', weight: 4, name: 'Assemblies of molecules, cells, and groups of cells', aliases: ['cell_biology', 'membranes', 'organelles', 'cell_theory'] },
+      { id: '2B', section: 'bio_biochem', weight: 2, name: 'Structure, growth, physiology, genetics of prokaryotes and viruses', aliases: ['prokaryotes', 'bacteria', 'viruses', 'microbiology'] },
+      { id: '2C', section: 'bio_biochem', weight: 3, name: 'Processes of cell division, differentiation, and specialization', aliases: ['cell_cycle', 'mitosis', 'differentiation', 'stem_cells'] },
+      { id: '3A', section: 'bio_biochem', weight: 4, name: 'Structure and function of the nervous and endocrine systems', aliases: ['nervous_system', 'endocrine', 'neurons', 'hormones'] },
+      { id: '3B', section: 'bio_biochem', weight: 4, name: 'Structure and function of the main organ systems', aliases: ['physiology', 'organ_systems', 'circulatory', 'respiratory', 'renal', 'immune'] },
+      { id: '6A', section: 'psych_soc', weight: 2, name: 'Sensing the environment', aliases: ['sensation', 'perception', 'senses', 'vision', 'hearing'] },
+      { id: '6B', section: 'psych_soc', weight: 3, name: 'Making sense of the environment', aliases: ['cognition', 'memory', 'attention', 'consciousness', 'intelligence'] },
+      { id: '6C', section: 'psych_soc', weight: 2, name: 'Responding to the world', aliases: ['emotion', 'stress', 'motivation'] },
+      { id: '7A', section: 'psych_soc', weight: 3, name: 'Individual influences on behavior', aliases: ['learning', 'conditioning', 'personality', 'biological_bases'] },
+      { id: '7B', section: 'psych_soc', weight: 3, name: 'Social processes that influence human behavior', aliases: ['social_influence', 'conformity', 'groups', 'socialization'] },
+      { id: '7C', section: 'psych_soc', weight: 2, name: 'Attitude and behavior change', aliases: ['attitudes', 'persuasion', 'behavior_change'] },
+      { id: '8A', section: 'psych_soc', weight: 2, name: 'Self-identity', aliases: ['self_concept', 'identity', 'self_esteem'] },
+      { id: '8B', section: 'psych_soc', weight: 3, name: 'Social thinking', aliases: ['attribution', 'prejudice', 'stereotypes', 'social_cognition'] },
+      { id: '8C', section: 'psych_soc', weight: 3, name: 'Social interactions', aliases: ['social_interaction', 'attraction', 'aggression', 'altruism'] },
+      { id: '9A', section: 'psych_soc', weight: 3, name: 'Understanding social structure', aliases: ['social_structure', 'institutions', 'culture', 'social_theory'] },
+      { id: '9B', section: 'psych_soc', weight: 2, name: 'Demographic characteristics and processes', aliases: ['demographics', 'population', 'migration'] },
+      { id: '10A', section: 'psych_soc', weight: 3, name: 'Social inequality', aliases: ['inequality', 'stratification', 'poverty', 'healthcare_disparities'] },
+    ],
+  };
+  const CFG = {
+    min_cards_memory: 20, min_outcomes_performance: 20,
+    giveup_min_reviews: 200, giveup_min_coverage: 0.5,
+    memory_high_max_width: 0.06, memory_high_min_n: 100,
+    perf_high_max_width: 0.1, perf_high_min_n: 60,
+    ready_high_max_width: 4, ready_high_min_coverage: 0.65,
+    min_outcomes_readiness: 5, projection_prior_strength: 8,
+    map_low_ability: 0.4, map_low_scale: 118, map_high_ability: 0.9, map_high_scale: 132,
+    section_scale_min: 118, section_scale_max: 132,
+    min_outcomes_calibration: 15, calibration_well_within: 0.1,
+    pace_reasoning_target: 60, pace_reasoning_per_concept: 10, pace_reasoning_floor: 3,
+    min_confidence_items: 10, overconfident_sure_max: 0.85, underconfident_guess_min: 0.55,
+    min_mistakes: 4, content_ready_recall: 0.8,
+    // score trajectory: project readiness to exam day (mirrors ScoringConfig.min_trajectory_days)
+    min_trajectory_days: 2,
+    seed: 42, resample_iters: 2000, ci_mass: 0.9,
+    // paraphrase test / fluency illusion (section-level and per-concept). Mirrors
+    // ScoringConfig.min_outcomes_transfer* and fluency_gap_threshold.
+    min_outcomes_transfer: 10, fluency_gap_threshold: 0.15, min_outcomes_transfer_card: 3,
+    // --- IRT latent-ability readiness (2PL, EAP over a fixed quadrature grid) ---
+    // Mirrors the ScoringConfig irt_* fields exactly. When readiness_use_irt is on
+    // (the desktop default), the IRT score feeds the dashboard whenever it clears
+    // every honesty gate; otherwise the classic ability->scale path is the
+    // fallback. Deterministic (fixed grid, no PRNG) so mobile == desktop.
+    readiness_use_irt: true,
+    irt_default_difficulty: 0, irt_default_discrimination: 1,
+    irt_prior_mean: 0, irt_prior_sd: 1, irt_grid_points: 61,
+    irt_theta_min: -4, irt_theta_max: 4,
+    irt_scale_midpoint: 125, irt_scale_per_theta: 3, irt_min_information: 4,
+  };
+
+  // AAMC content category -> the standard MCAT prep-book subject.
+  const SUBJECT_BY_CONCEPT = {
+    '4A': 'Physics and Math', '4B': 'Physics and Math', '4D': 'Physics and Math',
+    '4C': 'General Chemistry', '4E': 'General Chemistry', '5A': 'General Chemistry',
+    '5B': 'General Chemistry', '5E': 'General Chemistry',
+    '5C': 'Organic Chemistry', '5D': 'Organic Chemistry',
+    '1A': 'Biochemistry', '1B': 'Biochemistry', '1D': 'Biochemistry',
+    '1C': 'Biology', '2A': 'Biology', '2B': 'Biology', '2C': 'Biology', '3A': 'Biology', '3B': 'Biology',
+    '6A': 'Behavioral Sciences', '6B': 'Behavioral Sciences', '6C': 'Behavioral Sciences',
+    '7A': 'Behavioral Sciences', '7B': 'Behavioral Sciences', '7C': 'Behavioral Sciences',
+    '8A': 'Behavioral Sciences', '8B': 'Behavioral Sciences', '8C': 'Behavioral Sciences',
+    '9A': 'Behavioral Sciences', '9B': 'Behavioral Sciences', '10A': 'Behavioral Sciences',
+  };
+
+  const byId = {};
+  OUTLINE.concepts.forEach((c) => { byId[c.id.toLowerCase()] = c; });
+  const aliasToId = {};
+  OUTLINE.concepts.forEach((c) => (c.aliases || []).forEach((a) => { if (!(a in aliasToId)) aliasToId[a] = c.id; }));
+
+  const tokensOf = (tag) => tag.toLowerCase().split(/[^a-z0-9]+/).filter(Boolean);
+  function matchTag(tag) {
+    const tks = tokensOf(tag);
+    if (!tks.length) return null;
+    const set = new Set(tks);
+    for (const c of OUTLINE.concepts) if (set.has(c.id.toLowerCase())) return c.id;
+    const joined = tks.join('_');
+    for (const a in aliasToId) {
+      if (set.has(a)) return aliasToId[a];
+      if (a.includes('_') && joined.includes(a)) return aliasToId[a];
+    }
+    return null;
+  }
+  const totalWeight = () => OUTLINE.concepts.reduce((s, c) => s + c.weight, 0);
+  function weightedCoverage(covered) {
+    const t = totalWeight();
+    if (t <= 0) return 0;
+    let g = 0;
+    for (const c of OUTLINE.concepts) if (covered.has(c.id)) g += c.weight;
+    return g / t;
+  }
+  function coverageBySection(covered) {
+    const out = {};
+    for (const s in OUTLINE.sections) {
+      let sw = 0, g = 0;
+      for (const c of OUTLINE.concepts) if (c.section === s) { sw += c.weight; if (covered.has(c.id)) g += c.weight; }
+      out[s] = sw > 0 ? g / sw : 0;
+    }
+    return out;
+  }
+
+  const clamp = (x, lo, hi) => (x < lo ? lo : x > hi ? hi : x);
+  const round3 = (x) => Math.round(x * 1000) / 1000;
+  const round2 = (x) => Math.round(x * 100) / 100;
+  const round1 = (x) => Math.round(x * 10) / 10;
+  // Best-effort float; null for a missing/malformed value (config is untrusted).
+  // Mirrors collect._as_float, used for optional IRT item difficulty/discrimination.
+  const asFloat = (x) => { const v = typeof x === 'number' ? x : parseFloat(x); return Number.isFinite(v) ? v : null; };
+  // Central 90% two-sided z; shared by the normal-approximation intervals below
+  // and the section range, matching the Python core's z.
+  const Z90 = 1.6448536269514722;
+  // Deterministic normal-approximation CI for a mean (mirrors the Python core's
+  // switch off the percentile bootstrap): mean +/- z * standard error, clamped
+  // to [0, 1]. sd uses the sample (n-1) denominator and is 0 for a single value.
+  function normalMeanCI(vals) {
+    const n = vals.length;
+    const mean = vals.reduce((a, b) => a + b, 0) / n;
+    let sd = 0;
+    if (n >= 2) {
+      let ss = 0;
+      for (const x of vals) ss += (x - mean) * (x - mean);
+      sd = Math.sqrt(ss / (n - 1));
+    }
+    const se = sd / Math.sqrt(n);
+    return { point: mean, low: clamp(mean - Z90 * se, 0, 1), high: clamp(mean + Z90 * se, 0, 1) };
+  }
+  function memoryScore(rValues) {
+    const n = rValues.length;
+    if (n < CFG.min_cards_memory) {
+      return { abstained: true, how_sure: 'insufficient', n, reasons: [`only ${n} cards with a memory state (need >= ${CFG.min_cards_memory})`], point: null, low: null, high: null };
+    }
+    const b = normalMeanCI(rValues.map((r) => clamp(r, 0, 1)));
+    const width = b.high - b.low;
+    const how = width <= CFG.memory_high_max_width && n >= CFG.memory_high_min_n ? 'high' : width <= 2 * CFG.memory_high_max_width ? 'medium' : 'low';
+    return {
+      abstained: false, how_sure: how, n,
+      reasons: [`mean retrievability ${Math.round(b.point * 100)}% over ${n} seen cards`, `range width ${Math.round(width * 100)}%`],
+      point: round3(b.point), low: round3(b.low), high: round3(b.high),
+    };
+  }
+  function wilson(k, n) {
+    const z = 1.6448536269514722; // central 90%
+    const p = k / n;
+    const denom = 1 + (z * z) / n;
+    const center = (p + (z * z) / (2 * n)) / denom;
+    const half = (z * Math.sqrt((p * (1 - p)) / n + (z * z) / (4 * n * n))) / denom;
+    return { point: p, low: clamp(center - half, 0, 1), high: clamp(center + half, 0, 1) };
+  }
+  function performanceScore(perf) {
+    const n = perf.n || 0;
+    const k = perf.k || 0;
+    if (n < CFG.min_outcomes_performance) {
+      return { abstained: true, how_sure: 'insufficient', n, reasons: [`only ${n} application-item outcomes (need >= ${CFG.min_outcomes_performance})`], point: null, low: null, high: null };
+    }
+    const b = wilson(k, n);
+    const width = b.high - b.low;
+    const how = width <= CFG.perf_high_max_width && n >= CFG.perf_high_min_n ? 'high' : width <= 2 * CFG.perf_high_max_width ? 'medium' : 'low';
+    return { abstained: false, how_sure: how, n, reasons: [`${k}/${n} application items correct (${Math.round(b.point * 100)}%)`], point: round3(b.point), low: round3(b.low), high: round3(b.high) };
+  }
+
+  // Documented, anchored, monotonic transform ability(0..1) -> 118..132, then
+  // clamped to the section scale. Mirrors scoring.map_ability_to_scale.
+  function mapAbilityToScale(ability) {
+    const spanA = CFG.map_high_ability - CFG.map_low_ability;
+    const spanS = CFG.map_high_scale - CFG.map_low_scale;
+    const scaled = CFG.map_low_scale + ((ability - CFG.map_low_ability) / spanA) * spanS;
+    return clamp(scaled, CFG.section_scale_min, CFG.section_scale_max);
+  }
+
+  // Readiness: a per-section projection onto the 118..132 scale, gated and ranged,
+  // mirroring scoring.readiness. Abstains unless there are enough graded reviews,
+  // enough of the exam covered, AND enough exam-style practice outcomes. Each
+  // usable science section blends its reasoning accuracy (evidence) with its
+  // recall (a weak prior of strength kappa); CARS is never modeled. The range is
+  // a deterministic normal approximation of each section's posterior spread
+  // (exact Monte-Carlo parity with desktop is not feasible on-device), summed to
+  // the partial composite.
+  function readinessScore(outcomes, sectionRecall, coverage, nReviews, totalOutcomes) {
+    const reasons = [];
+    if (nReviews < CFG.giveup_min_reviews)
+      reasons.push(`${CFG.giveup_min_reviews} graded reviews (you have ${nReviews})`);
+    if (coverage < CFG.giveup_min_coverage)
+      reasons.push(`${Math.round(CFG.giveup_min_coverage * 100)}% of the exam covered (you have ${Math.round(coverage * 100)}%)`);
+    if (totalOutcomes < CFG.min_outcomes_performance)
+      reasons.push(`${CFG.min_outcomes_performance} exam-style practice questions answered (you have ${totalOutcomes})`);
+    if (reasons.length) {
+      return { abstained: true, how_sure: 'insufficient', n: nReviews, reasons, sections: {}, cars_modeled: false };
+    }
+
+    const kappa = CFG.projection_prior_strength;
+    const kn = { chem_phys: { k: 0, n: 0 }, bio_biochem: { k: 0, n: 0 }, psych_soc: { k: 0, n: 0 } };
+    for (const o of outcomes) {
+      if (!(o.section in kn)) continue; // science sections only, never CARS
+      kn[o.section].n += 1;
+      if (o.correct) kn[o.section].k += 1;
+    }
+
+    const sections = {};
+    let point = 0, low = 0, high = 0, widthSum = 0, usable = 0, weakest = null, weakestPt = Infinity;
+    for (const s of ['chem_phys', 'bio_biochem', 'psych_soc']) {
+      const k = kn[s].k, n = kn[s].n;
+      if (n < CFG.min_outcomes_readiness) continue;
+      const m = clamp(sectionRecall[s] || 0, 0, 1); // 0 if the section has no recall yet
+      const ability = (k + m * kappa) / (n + kappa);
+      const std = Math.sqrt((ability * (1 - ability)) / (n + kappa));
+      const sp = mapAbilityToScale(ability);
+      const sl = mapAbilityToScale(ability - Z90 * std);
+      const sh = mapAbilityToScale(ability + Z90 * std);
+      sections[s] = { point: round1(sp), low: round1(sl), high: round1(sh) };
+      point += sp; low += sl; high += sh; widthSum += sh - sl; usable += 1;
+      if (sp < weakestPt) { weakestPt = sp; weakest = s; }
+    }
+
+    if (!usable) {
+      return { abstained: true, how_sure: 'insufficient', n: nReviews, reasons: [`at least ${CFG.min_outcomes_readiness} practice questions in one science section`], sections: {}, cars_modeled: false };
+    }
+
+    const avgWidth = widthSum / usable;
+    const how = avgWidth <= CFG.ready_high_max_width && coverage >= CFG.ready_high_min_coverage ? 'high' : avgWidth <= 2 * CFG.ready_high_max_width ? 'medium' : 'low';
+    const reasonsOut = [
+      `projected across ${usable} of 3 science sections`,
+      `${Math.round(coverage * 100)}% of the exam covered`,
+    ];
+    if (weakest) reasonsOut.push(`weakest section so far: ${OUTLINE.sections[weakest]} (${kn[weakest].k}/${kn[weakest].n} questions)`);
+    return {
+      abstained: false, how_sure: how, n: nReviews, cars_modeled: false,
+      point: round1(point), low: round1(low), high: round1(high),
+      sections, reasons: reasonsOut,
+    };
+  }
+
+  // --------------------------------------------------------------------------- //
+  // IRT latent-ability readiness (2PL item-response model, EAP over a fixed grid)
+  // A faithful, deterministic port of scoring.irt_* (irt_prob, irt_information,
+  // _irt_grid, irt_estimate, theta_to_scale, irt_readiness). Expected A Posteriori
+  // over a FIXED quadrature grid with a normal prior -- no PRNG anywhere -- so the
+  // phone reproduces theta, its posterior SD, and every section/composite band
+  // bit-for-bit against the desktop core (the parity mandate). Ability is estimated
+  // from WHICH items were right (each with a difficulty b and discrimination a),
+  // not merely how many, and the per-item Fisher information gives a first-class
+  // abstain gate (too little information -> no number).
+  // --------------------------------------------------------------------------- //
+
+  // Inverse standard-normal CDF (Acklam's rational approximation). The IRT path
+  // uses THIS for its z (as scoring.irt_readiness does via _inv_norm_cdf), not the
+  // Z90 literal, so z == scoring._inv_norm_cdf(0.95) to full precision and the
+  // section/composite bands agree with desktop.
+  function invNormCdf(p) {
+    if (!(p > 0 && p < 1)) throw new Error('p must be in (0,1)');
+    const a = [-3.969683028665376e1, 2.209460984245205e2, -2.759285104469687e2, 1.38357751867269e2, -3.066479806614716e1, 2.506628277459239e0];
+    const b = [-5.447609879822406e1, 1.615858368580409e2, -1.556989798598866e2, 6.680131188771972e1, -1.328068155288572e1];
+    const c = [-7.784894002430293e-3, -3.223964580411365e-1, -2.400758277161838e0, -2.549732539343734e0, 4.374664141464968e0, 2.938163982698783e0];
+    const d = [7.784695709041462e-3, 3.224671290700398e-1, 2.445134137142996e0, 3.754408661907416e0];
+    const plow = 0.02425, phigh = 1 - plow;
+    let q, r;
+    if (p < plow) {
+      q = Math.sqrt(-2 * Math.log(p));
+      return (((((c[0] * q + c[1]) * q + c[2]) * q + c[3]) * q + c[4]) * q + c[5]) /
+        ((((d[0] * q + d[1]) * q + d[2]) * q + d[3]) * q + 1);
+    }
+    if (p > phigh) {
+      q = Math.sqrt(-2 * Math.log(1 - p));
+      return -(((((c[0] * q + c[1]) * q + c[2]) * q + c[3]) * q + c[4]) * q + c[5]) /
+        ((((d[0] * q + d[1]) * q + d[2]) * q + d[3]) * q + 1);
+    }
+    q = p - 0.5; r = q * q;
+    return (((((a[0] * r + a[1]) * r + a[2]) * r + a[3]) * r + a[4]) * r + a[5]) * q /
+      (((((b[0] * r + b[1]) * r + b[2]) * r + b[3]) * r + b[4]) * r + 1);
+  }
+
+  // 2PL probability of a correct response: logistic in a * (theta - b).
+  function irtProb(theta, a, b) { return 1 / (1 + Math.exp(-a * (theta - b))); }
+  // Fisher information one 2PL item carries at theta: a^2 * p * (1 - p).
+  function irtInformation(theta, a, b) { const p = irtProb(theta, a, b); return a * a * p * (1 - p); }
+  function normalPdf(x, mu, sd) { const z = (x - mu) / sd; return Math.exp(-0.5 * z * z) / (sd * Math.sqrt(2 * Math.PI)); }
+  // The fixed (node, prior-weight) quadrature grid: evenly spaced nodes over
+  // [theta_min, theta_max] with the normal-prior density as each weight. The
+  // absolute normalization cancels in the EAP ratio, so this rebuilds the same
+  // grid desktop uses (_irt_grid).
+  function irtGrid() {
+    const n = CFG.irt_grid_points;
+    const lo = CFG.irt_theta_min, hi = CFG.irt_theta_max;
+    const step = (hi - lo) / (n - 1);
+    const g = [];
+    for (let i = 0; i < n; i++) {
+      const x = lo + step * i;
+      g.push([x, normalPdf(x, CFG.irt_prior_mean, CFG.irt_prior_sd)]);
+    }
+    return g;
+  }
+  // EAP estimate of latent ability from 2PL responses (irt_estimate). posterior is
+  // prior(theta) * prod_i P_i^u_i (1-P_i)^(1-u_i), evaluated on the fixed grid in
+  // log-space with a max-subtraction so a long item list can't underflow. Returns
+  // theta (posterior mean), theta_sd (its SD), information (2PL test info at theta).
+  // items: [{ correct: 0|1, a, b }]. Fully deterministic (no PRNG).
+  function irtEstimate(items) {
+    const grid = irtGrid();
+    const logPost = [];
+    for (let gi = 0; gi < grid.length; gi++) {
+      const x = grid[gi][0], w = grid[gi][1];
+      let ll = w > 0 ? Math.log(w) : -Infinity;
+      for (let ii = 0; ii < items.length; ii++) {
+        const it = items[ii];
+        const p = clamp(irtProb(x, it.a, it.b), 1e-12, 1 - 1e-12);
+        ll += it.correct ? Math.log(p) : Math.log(1 - p);
+      }
+      logPost.push(ll);
+    }
+    let maxLl = -Infinity;
+    for (let i = 0; i < logPost.length; i++) if (logPost[i] > maxLl) maxLl = logPost[i];
+    const weights = logPost.map((lp) => Math.exp(lp - maxLl));
+    let total = 0; for (let i = 0; i < weights.length; i++) total += weights[i];
+    if (total <= 0) return { theta: CFG.irt_prior_mean, theta_sd: CFG.irt_prior_sd, information: 0, n: items.length };
+    let theta = 0; for (let i = 0; i < grid.length; i++) theta += grid[i][0] * weights[i]; theta /= total;
+    let varSum = 0; for (let i = 0; i < grid.length; i++) { const dv = grid[i][0] - theta; varSum += weights[i] * dv * dv; } varSum /= total;
+    const sd = Math.sqrt(Math.max(0, varSum));
+    let info = 0; for (let i = 0; i < items.length; i++) info += irtInformation(theta, items[i].a, items[i].b);
+    return { theta, theta_sd: sd, information: info, n: items.length };
+  }
+  // Documented monotonic transform theta -> 118..132 as midpoint + per_theta*theta,
+  // clamped to the section band (theta = 0 -> the scale midpoint). Mirrors theta_to_scale.
+  function thetaToScale(theta) {
+    const scaled = CFG.irt_scale_midpoint + CFG.irt_scale_per_theta * theta;
+    return clamp(scaled, CFG.section_scale_min, CFG.section_scale_max);
+  }
+  // Readiness via 2PL IRT latent ability (irt_readiness): per science section plus a
+  // labeled 3-section partial composite, each with an honest range. Same honesty
+  // gates as the classic path (give-up rule + minimum total items + a per-section
+  // minimum item COUNT). A section the student aces carries little Fisher
+  // information, so IRT can't pin its score -- that shows as a wide range, not a
+  // dropped section. Section range is thetaToScale(theta +/- z*sd) (monotone map),
+  // and the composite range propagates the independent section bands. CARS is never
+  // modeled. sectionItems: { section: [{ correct, a, b }] }.
+  function irtReadiness(sectionItems, coverage, nReviews, totalItems) {
+    const reasons = [];
+    if (nReviews < CFG.giveup_min_reviews)
+      reasons.push(`${CFG.giveup_min_reviews} graded reviews (you have ${nReviews})`);
+    if (coverage < CFG.giveup_min_coverage)
+      reasons.push(`${Math.round(CFG.giveup_min_coverage * 100)}% of the exam covered (you have ${Math.round(coverage * 100)}%)`);
+    if (totalItems < CFG.min_outcomes_performance)
+      reasons.push(`${CFG.min_outcomes_performance} exam-style practice questions answered (you have ${totalItems})`);
+    if (reasons.length) {
+      return { abstained: true, how_sure: 'insufficient', n: nReviews, reasons, sections: {}, cars_modeled: false };
+    }
+    const z = invNormCdf(1 - (1 - CFG.ci_mass) / 2);
+    const sections = {};
+    const est = {};
+    const usable = [];
+    for (const s of ['chem_phys', 'bio_biochem', 'psych_soc']) {
+      const items = sectionItems[s] || [];
+      // include a section once it has enough answered items (matches the classic
+      // count gate); a section the student aces yields little Fisher information,
+      // so IRT can't pin the score -> a wide honest range, not a dropped section.
+      if (items.length < CFG.min_outcomes_readiness) continue;
+      const e = irtEstimate(items);
+      sections[s] = {
+        point: round1(thetaToScale(e.theta)),
+        low: round1(thetaToScale(e.theta - z * e.theta_sd)),
+        high: round1(thetaToScale(e.theta + z * e.theta_sd)),
+      };
+      est[s] = e;
+      usable.push(s);
+    }
+    if (!usable.length) {
+      return {
+        abstained: true, how_sure: 'insufficient', n: nReviews, sections: {}, cars_modeled: false,
+        reasons: ['not enough exam-style practice in one science section yet to estimate a score'],
+      };
+    }
+    const compLo = usable.length * CFG.section_scale_min;
+    const compHi = usable.length * CFG.section_scale_max;
+    let compPoint = 0; for (const s of usable) compPoint += sections[s].point;
+    let sig2 = 0; for (const s of usable) { const w = (sections[s].high - sections[s].low) / (2 * z); sig2 += w * w; }
+    const compSigma = Math.sqrt(sig2);
+    const point = round1(compPoint);
+    const low = round1(clamp(compPoint - z * compSigma, compLo, compHi));
+    const high = round1(clamp(compPoint + z * compSigma, compLo, compHi));
+    let widthSum = 0; for (const s of usable) widthSum += sections[s].high - sections[s].low;
+    const avgWidth = widthSum / usable.length;
+    const how = avgWidth <= CFG.ready_high_max_width && coverage >= CFG.ready_high_min_coverage ? 'high' : avgWidth <= 2 * CFG.ready_high_max_width ? 'medium' : 'low';
+    const reasonsOut = [
+      `projected across ${usable.length} of 3 science sections`,
+      `${Math.round(coverage * 100)}% of the exam covered`,
+    ];
+    let weakest = null, weakestPt = Infinity;
+    for (const s of usable) if (sections[s].point < weakestPt) { weakestPt = sections[s].point; weakest = s; }
+    if (weakest) reasonsOut.push(`weakest section so far: ${OUTLINE.sections[weakest]} (${est[weakest].n} questions)`);
+    return {
+      abstained: false, how_sure: how, n: nReviews, cars_modeled: false,
+      point, low, high, sections, reasons: reasonsOut,
+    };
+  }
+
+  // --------------------------------------------------------------------------- //
+  // paraphrase test (transfer gap: memory vs application on the same material).
+  // transferGap mirrors scoring.transfer_gap (per section); conceptTransferGaps
+  // mirrors scoring.concept_transfer_gaps (per concept -- the "fluency illusion"
+  // list). A large positive gap means the student recalls the fact but cannot yet
+  // use it. Reported only with a memory signal AND enough application items.
+  // --------------------------------------------------------------------------- //
+  function transferGap(sectionRecall, sectionApp) {
+    const out = {};
+    for (const s of ['chem_phys', 'bio_biochem', 'psych_soc']) {
+      const recall = sectionRecall[s];
+      const outs = sectionApp[s] || [];
+      if (recall === undefined || recall === null || outs.length < CFG.min_outcomes_transfer) continue;
+      const application = outs.reduce((a, b) => a + b, 0) / outs.length;
+      const r = clamp(recall, 0, 1);
+      const gap = r - application;
+      out[s] = {
+        section: s, recall: round3(r), application: round3(application),
+        gap: round3(gap), n_app: outs.length, fluency_risk: gap >= CFG.fluency_gap_threshold,
+      };
+    }
+    return out;
+  }
+  // Card-level paraphrase test, per concept: recall vs application accuracy, worst
+  // fluency illusion first (gap descending, then concept id). conceptRecall keys the
+  // iteration, so a concept with application items but no memory signal is excluded.
+  function conceptTransferGaps(conceptRecall, conceptApp, conceptSection) {
+    const out = [];
+    for (const cid in conceptRecall) {
+      const outs = conceptApp[cid] || [];
+      if (outs.length < CFG.min_outcomes_transfer_card) continue;
+      const application = outs.reduce((a, b) => a + b, 0) / outs.length;
+      const r = clamp(conceptRecall[cid], 0, 1);
+      const gap = r - application;
+      out.push({
+        concept_id: cid, section: conceptSection[cid] || '',
+        recall: round3(r), application: round3(application), gap: round3(gap),
+        n_app: outs.length, fluency_risk: gap >= CFG.fluency_gap_threshold,
+      });
+    }
+    // worst fluency illusion first, then a stable tiebreak by concept id (matches
+    // Python's sort key (-gap, concept_id), using the rounded gap).
+    out.sort((x, y) => (y.gap - x.gap) || (x.concept_id < y.concept_id ? -1 : x.concept_id > y.concept_id ? 1 : 0));
+    return out;
+  }
+
+  function nextTopics(covered, conceptR, top) {
+    const items = OUTLINE.concepts.map((c) => {
+      const rs = conceptR[c.id] || [];
+      const mastery = rs.length ? rs.reduce((a, b) => a + b, 0) / rs.length : 0;
+      return {
+        concept_id: c.id, name: c.name, section: c.section, weight: c.weight,
+        mastery: round3(mastery), covered: covered.has(c.id), priority: round3(c.weight * (1 - mastery)),
+        subject: SUBJECT_BY_CONCEPT[c.id] || '',
+        topics: (c.aliases || []).slice(0, 4).map((a) => a.replace(/_/g, ' ')),
+      };
+    });
+    items.sort((a, b) => b.priority - a.priority);
+    return items.slice(0, top || 6);
+  }
+
+  function calibration(pairs) {
+    const n = pairs.length;
+    if (n < CFG.min_outcomes_calibration) {
+      return { abstained: true, how_sure: 'insufficient', n, bins: [] };
+    }
+    const meanPred = pairs.reduce((s, p) => s + p[0], 0) / n;
+    const meanObs = pairs.reduce((s, p) => s + p[1], 0) / n;
+    const well = Math.abs(meanPred - meanObs) <= CFG.calibration_well_within;
+    const how = n >= 60 ? 'high' : n >= 2 * CFG.min_outcomes_calibration ? 'medium' : 'low';
+    return {
+      abstained: false, how_sure: how, n,
+      mean_predicted: round3(meanPred), mean_observed: round3(meanObs), well_calibrated: well, bins: [],
+    };
+  }
+
+  function confidenceCalibration(outcomes) {
+    const ok = ['guess', 'unsure', 'sure'];
+    const labeled = outcomes.filter((o) => ok.includes(o.confidence));
+    const n = labeled.length;
+    if (n < CFG.min_confidence_items) return { abstained: true, n, levels: [] };
+    const by = { guess: [], unsure: [], sure: [] };
+    labeled.forEach((o) => by[o.confidence].push(o.correct ? 1 : 0));
+    const rate = (a) => (a.length ? a.reduce((x, y) => x + y, 0) / a.length : 0);
+    const levels = [];
+    for (const lvl of ok) if (by[lvl].length) levels.push({ level: lvl, n: by[lvl].length, rate: round3(rate(by[lvl])) });
+    let insight = 'Your confidence lines up with your results.';
+    if (by.sure.length >= 3 && rate(by.sure) < CFG.overconfident_sure_max) {
+      insight = `When you felt sure you were right ${Math.round(rate(by.sure) * 100)}%. Slow down on the ones you are sure about.`;
+    } else if (by.guess.length >= 3 && rate(by.guess) > CFG.underconfident_guess_min) {
+      insight = `You got ${Math.round(rate(by.guess) * 100)}% of your guesses right. Trust your reasoning more, and move faster.`;
+    }
+    return { abstained: false, n, levels, insight };
+  }
+
+  function mistakeTaxonomy(outcomes) {
+    const reasons = ['content', 'misread', 'trap', 'time', 'math'];
+    const wrong = outcomes.filter((o) => !o.correct && reasons.includes(o.reason));
+    const n = wrong.length;
+    if (n < CFG.min_mistakes) return { abstained: true, n_wrong: n, items: [] };
+    const by = {};
+    wrong.forEach((o) => { by[o.reason] = (by[o.reason] || 0) + 1; });
+    const items = Object.keys(by).map((r) => ({ reason: r, count: by[r] })).sort((a, b) => b.count - a.count);
+    const top = items[0].reason;
+    const sec = {};
+    wrong.filter((o) => o.reason === top).forEach((o) => { sec[o.section] = (sec[o.section] || 0) + 1; });
+    const topSection = Object.keys(sec).sort((a, b) => sec[b] - sec[a])[0] || null;
+    return { abstained: false, n_wrong: n, items, top_reason: top, top_section: topSection };
+  }
+
+  function studyPlanJS(covered, conceptR) {
+    const study = [], practice = [];
+    for (const c of OUTLINE.concepts) {
+      const rs = conceptR[c.id] || [];
+      const recall = rs.length ? rs.reduce((a, b) => a + b, 0) / rs.length : null;
+      if (recall === null || recall < CFG.content_ready_recall) {
+        study.push({ concept_id: c.id, name: c.name, section: c.section, recall: recall === null ? null : round3(recall), priority: c.weight * (1 - (recall || 0)) });
+      } else {
+        practice.push({ concept_id: c.id, name: c.name, section: c.section, recall: round3(recall), priority: c.weight });
+      }
+    }
+    study.sort((a, b) => b.priority - a.priority);
+    practice.sort((a, b) => b.priority - a.priority);
+    return { study: study.slice(0, 5), practice: practice.slice(0, 5) };
+  }
+
+  const SECTION_TIMING = { chem_phys: [59, 95], bio_biochem: [59, 95], psych_soc: [59, 95], cars: [53, 90] };
+  function median(xs) {
+    const s = xs.slice().sort((a, b) => a - b);
+    const n = s.length, m = n >> 1;
+    return n % 2 ? s[m] : (s[m - 1] + s[m]) / 2;
+  }
+  function pacingCoach(outcomes) {
+    const timed = outcomes.filter((o) => o.ms && o.ms > 0);
+    if (timed.length < 8) return { abstained: true, n: timed.length, sections: [] };
+    const by = {};
+    timed.forEach((o) => { (by[o.section] = by[o.section] || []).push(o.ms / 1000); });
+    const sections = [];
+    for (const s in by) {
+      const vals = by[s];
+      if (vals.length < 3 || !SECTION_TIMING[s]) continue;
+      const med = median(vals);
+      const q = SECTION_TIMING[s][0], limit = SECTION_TIMING[s][1] * 60, target = limit / q;
+      if (med <= target) {
+        sections.push({ section: s, n: vals.length, median_sec: Math.round(med * 10) / 10, target_sec: Math.round(target * 10) / 10, on_pace: true, projected_left: 0, spare_min: Math.round(((limit - med * q) / 60) * 10) / 10 });
+      } else {
+        sections.push({ section: s, n: vals.length, median_sec: Math.round(med * 10) / 10, target_sec: Math.round(target * 10) / 10, on_pace: false, projected_left: Math.max(0, q - Math.floor(limit / med)), spare_min: 0 });
+      }
+    }
+    if (!sections.length) return { abstained: true, n: timed.length, sections: [] };
+    return { abstained: false, n: timed.length, sections, overall_on_pace: sections.every((x) => x.on_pace) };
+  }
+
+  function studyPace(raw, reasoningDone, conceptsToPractice, cardsStudied) {
+    const target = CFG.pace_reasoning_target;
+    const remaining = Math.max(0, target - reasoningDone);
+    const base = {
+      reviews_due: raw.reviews_due || 0, new_remaining: raw.new_remaining || 0,
+      reasoning_target: target, reasoning_done: reasoningDone, reasoning_remaining: remaining,
+    };
+    const exam = raw.exam_date;
+    if (!exam) return Object.assign({ has_exam_date: false, message: 'Set your exam date to get a daily study target.' }, base);
+    const today = raw.today || new Date().toISOString().slice(0, 10);
+    const dl = Math.round((Date.parse(exam) - Date.parse(today)) / 86400000);
+    if (isNaN(dl)) return Object.assign({ has_exam_date: false, message: 'Could not read the exam date.' }, base);
+    if (dl < 0) return Object.assign({ has_exam_date: true, exam_date: exam, days_left: dl, passed: true, message: 'Your exam date has passed. Set a new one to get a plan.' }, base);
+    const div = Math.max(1, dl);
+    // Daily reasoning goal derives from real exam breadth (concepts left x a
+    // per-concept budget) with a floor; mirrors scoring.study_pace on desktop.
+    const prep = (conceptsToPractice || 0) * (CFG.pace_reasoning_per_concept || 10);
+    const reasoningPerDay = Math.max(CFG.pace_reasoning_floor || 3, Math.ceil(prep / div));
+    // Flashcards: FSRS due today, ramping to a full pass by exam day as time shrinks.
+    const flashcardsPerDay = Math.max(raw.reviews_due || 0, Math.ceil(((raw.new_remaining || 0) + (cardsStudied || 0)) / div));
+    return Object.assign({
+      has_exam_date: true, exam_date: exam, days_left: dl, passed: false, flashcards_per_day: flashcardsPerDay,
+      new_per_day: Math.ceil((raw.new_remaining || 0) / div), reasoning_per_day: reasoningPerDay, message: '',
+    }, base);
+  }
+
+  // --------------------------------------------------------------------------- //
+  // score trajectory (project the readiness composite to exam day). A faithful,
+  // deterministic port of scoring.trajectory: an ordinary least-squares slope over
+  // the dated { d, point } readiness snapshots, extrapolated to exam day and
+  // clamped to the three-section band (3 x 118..132 = 354..396). Honesty-first
+  // (the give-up rule): abstains until there are at least min_trajectory_days
+  // DISTINCT days of history AND a target score AND an exam date, so a single point
+  // never invents a trend. No PRNG. The regression x-values are Python
+  // date.toordinal() ordinals (isoToOrdinal), so the least-squares sums run on
+  // operands identical to the desktop core (both IEEE-754 doubles) and the
+  // projected point matches bit-for-bit to rounding -- the parity mandate.
+  // --------------------------------------------------------------------------- //
+
+  // Proleptic-Gregorian ordinal of an ISO "YYYY-MM-DD" date, matching Python's
+  // datetime.date.toordinal() exactly (0001-01-01 -> 1). Using the SAME integer
+  // x-values as scoring.trajectory keeps the OLS accumulation bit-identical across
+  // Python and JS, so the slope and projection agree to the last decimal. Returns
+  // NaN for an unparseable date (config is untrusted).
+  const DAYS_BEFORE_MONTH = [0, 0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334];
+  function isoToOrdinal(s) {
+    const parts = String(s).split('-');
+    if (parts.length !== 3) return NaN;
+    const y = parseInt(parts[0], 10), mo = parseInt(parts[1], 10), d = parseInt(parts[2], 10);
+    if (!Number.isInteger(y) || !Number.isInteger(mo) || !Number.isInteger(d) || mo < 1 || mo > 12) return NaN;
+    const yy = y - 1;
+    const daysBeforeYear = yy * 365 + Math.floor(yy / 4) - Math.floor(yy / 100) + Math.floor(yy / 400);
+    const isLeap = y % 4 === 0 && (y % 100 !== 0 || y % 400 === 0);
+    const daysBeforeMonth = DAYS_BEFORE_MONTH[mo] + (mo > 2 && isLeap ? 1 : 0);
+    return daysBeforeYear + daysBeforeMonth + d;
+  }
+
+  // trajectory(history, target, daysToExam, weakest) -> the same shape as
+  // scoring.trajectory's Trajectory dataclass (abstained / projected / target /
+  // on_pace / per_week / weakest_section / reason). history is
+  // [{ d: 'YYYY-MM-DD', point: number }]; daysToExam is an integer day count
+  // (may be 0 or negative, exactly as collect.gather passes days_left), or null.
+  function trajectory(history, target, daysToExam, weakest) {
+    if (!target || daysToExam === null || daysToExam === undefined) {
+      return { abstained: true, target: target || null, reason: 'set a target score and an exam date' };
+    }
+    // distinct-days gate: mirrors sorted({h["d"]}) then len < min_trajectory_days
+    const days = new Set();
+    for (const h of history) days.add(h.d);
+    if (days.size < CFG.min_trajectory_days) {
+      return { abstained: true, target, reason: 'your trajectory appears after a few days of study' };
+    }
+    // least-squares slope over ALL snapshots (not de-duplicated), accumulated in
+    // input order to match the Python core's summation exactly.
+    const pts = history.map((h) => [isoToOrdinal(h.d), Number(h.point)]);
+    const m = pts.length;
+    let sx = 0, sy = 0, sxx = 0, sxy = 0;
+    for (let i = 0; i < m; i++) { const x = pts[i][0], y = pts[i][1]; sx += x; sy += y; sxx += x * x; sxy += x * y; }
+    const denom = m * sxx - sx * sx;
+    const slope = denom ? (m * sxy - sx * sy) / denom : 0;
+    // anchor on the most recent snapshot BY DATE, not input order (first on a tie,
+    // like Python's max), so an out-of-order history still projects from the latest.
+    let base = pts[0][1], baseOrd = pts[0][0];
+    for (let i = 1; i < m; i++) if (pts[i][0] > baseOrd) { baseOrd = pts[i][0]; base = pts[i][1]; }
+    // clamp the linear extrapolation to the three-section band, so a steep recent
+    // slope can't project an impossible number (readiness only ever records full
+    // 3-section composites, so the base sits on the 354..396 band).
+    const lo = 3 * CFG.section_scale_min;
+    const hi = 3 * CFG.section_scale_max;
+    const projected = Math.min(hi, Math.max(lo, base + slope * daysToExam));
+    return {
+      abstained: false,
+      projected: round1(projected),
+      target,
+      on_pace: projected >= target, // uses the UNrounded projected, like desktop
+      per_week: round2(slope * 7),
+      weakest_section: weakest || null,
+      reason: '',
+    };
+  }
+
+  window.vantageComputeFromRaw = function (raw) {
+    const covered = new Set();
+    const rValues = [];
+    const conceptR = {};
+    for (const row of raw.cards) {
+      const tags = row[0], r = row[1];
+      const cc = new Set();
+      for (const t of (tags || '').split(/\s+/)) { if (!t) continue; const cid = matchTag(t); if (cid) cc.add(cid); }
+      cc.forEach((cid) => covered.add(cid));
+      if (r !== null && r !== undefined) {
+        rValues.push(r);
+        cc.forEach((cid) => { (conceptR[cid] = conceptR[cid] || []).push(r); });
+      }
+    }
+    const coverage = weightedCoverage(covered);
+    const nReviews = raw.n_reviews || 0;
+
+    // per-section recall (mean retrievability), used as the calibration predictor
+    const sectionR = { chem_phys: [], bio_biochem: [], psych_soc: [] };
+    for (const cid in conceptR) {
+      const c = byId[cid.toLowerCase()];
+      if (c && sectionR[c.section]) sectionR[c.section].push.apply(sectionR[c.section], conceptR[cid]);
+    }
+    const sectionRecall = {};
+    for (const s in sectionR) if (sectionR[s].length) sectionRecall[s] = sectionR[s].reduce((a, b) => a + b, 0) / sectionR[s].length;
+
+    // application outcomes: prefer the full array (section + correct), else the aggregate
+    const outcomes = raw.perf_outcomes || [];
+    const perfN = outcomes.length ? outcomes.length : (raw.perf && raw.perf.n) || 0;
+    const perfK = outcomes.length ? outcomes.filter((o) => o.correct).length : (raw.perf && raw.perf.k) || 0;
+    const calibPairs = [];
+    for (const o of outcomes) if (o.section in sectionRecall) calibPairs.push([sectionRecall[o.section], o.correct ? 1 : 0]);
+
+    // per science-section application outcomes (1/0), for readiness + the paraphrase test
+    const sectionOutcomes = { chem_phys: [], bio_biochem: [], psych_soc: [] };
+    for (const o of outcomes) if (o.section in sectionOutcomes) sectionOutcomes[o.section].push(o.correct ? 1 : 0);
+    // The readiness give-up gate counts SCIENCE-section outcomes only (CARS is never
+    // modeled), matching collect.gather's total_outcomes / total_items. Performance
+    // and study pace still use every outcome (perfN) as on desktop.
+    let scienceTotal = 0;
+    for (const s in sectionOutcomes) scienceTotal += sectionOutcomes[s].length;
+
+    // Readiness. The classic ability->scale projection is the honest fallback; the
+    // 2PL IRT latent-ability path is the desktop default. IRT overrides the classic
+    // result only when the flag is on AND it clears every honesty gate (give-up,
+    // min items, per-section test information) -- exactly like collect.gather.
+    let readinessOut = readinessScore(outcomes, sectionRecall, coverage, nReviews, scienceTotal);
+    if (CFG.readiness_use_irt) {
+      const sectionItems = { chem_phys: [], bio_biochem: [], psych_soc: [] };
+      for (const o of outcomes) {
+        if (!(o.section in sectionItems)) continue;
+        // difficulty/discrimination come from item metadata when present, else the
+        // fixed 2PL prior -- matching collect.gather's IrtItem construction.
+        const b = asFloat(o.difficulty);
+        const a = asFloat(o.discrimination);
+        sectionItems[o.section].push({
+          correct: o.correct ? 1 : 0,
+          b: b === null ? CFG.irt_default_difficulty : b,
+          a: a === null ? CFG.irt_default_discrimination : a,
+        });
+      }
+      const irt = irtReadiness(sectionItems, coverage, nReviews, scienceTotal);
+      if (!irt.abstained) readinessOut = irt;
+    }
+
+    // Per-concept paraphrase test (the "fluency illusion" list): application outcomes
+    // carry the linked concept (from the reasoning card's concept tag); recall is the
+    // mean retrievability of that concept's studied cards. Mirrors collect.gather.
+    const conceptApp = {};
+    for (const o of outcomes) {
+      const cid = o.concept;
+      if (typeof cid === 'string' && cid) (conceptApp[cid] = conceptApp[cid] || []).push(o.correct ? 1 : 0);
+    }
+    const conceptRecallMean = {};
+    for (const cid in conceptR) { const rs = conceptR[cid]; if (rs && rs.length) conceptRecallMean[cid] = rs.reduce((a, b) => a + b, 0) / rs.length; }
+    const conceptSection = {};
+    new Set(Object.keys(conceptRecallMean).concat(Object.keys(conceptApp))).forEach((cid) => {
+      const c = byId[cid.toLowerCase()];
+      if (c) conceptSection[cid] = c.section;
+    });
+    const fluencyItems = conceptTransferGaps(conceptRecallMean, conceptApp, conceptSection);
+    const transfer = transferGap(sectionRecall, sectionOutcomes);
+
+    const nextTops = nextTopics(covered, conceptR, 6);
+
+    // Concepts not yet exam-ready (uncovered or recall below the content line):
+    // real breadth left, drives the daily reasoning goal.
+    let conceptsToPractice = 0;
+    for (const c of OUTLINE.concepts) {
+      const rs = conceptR[c.id] || [];
+      const recall = rs.length ? rs.reduce((a, b) => a + b, 0) / rs.length : 0;
+      if (recall < CFG.content_ready_recall) conceptsToPractice += 1;
+    }
+
+    // Score trajectory: fold today's readiness into the dated snapshot history and
+    // project it to exam day, mirroring collect.gather's HISTORY_CONFIG_KEY logic.
+    // The host provides the stored history (raw.readiness_history), the target
+    // (raw.target), and the exam date (raw.exam_date); it persists the returned
+    // readiness_history_persist array back to config when it is non-null.
+    const SCI = ['chem_phys', 'bio_biochem', 'psych_soc'];
+    // weakest modeled section (min point), mirrors collect.gather's `weakest`.
+    let weakestReady = null, weakestReadyPt = Infinity;
+    if (!readinessOut.abstained && readinessOut.sections) {
+      for (const s in readinessOut.sections) {
+        const p = readinessOut.sections[s].point;
+        if (p < weakestReadyPt) { weakestReadyPt = p; weakestReady = s; }
+      }
+    }
+    // Only a LIVE, full 3-section composite is comparable day to day; a partial or
+    // abstained readiness is never recorded (and never feeds the projection).
+    const modeledSections = (!readinessOut.abstained && readinessOut.sections) ? Object.keys(readinessOut.sections) : [];
+    const isFullComposite = !readinessOut.abstained &&
+      readinessOut.point !== undefined && readinessOut.point !== null &&
+      modeledSections.length === SCI.length && SCI.every((s) => modeledSections.includes(s));
+
+    // Stored history is user-writable and synced, so keep only well-formed
+    // { d: <iso str>, point: <number> } points -- exactly collect.gather's guard.
+    let history = [];
+    if (Array.isArray(raw.readiness_history)) {
+      for (const h of raw.readiness_history) {
+        if (h && typeof h === 'object') {
+          const d = h.d, point = asFloat(h.point);
+          if (typeof d === 'string' && d && point !== null) history.push({ d, point });
+        }
+      }
+    }
+    const todayIso = raw.today || '';
+    // Record today's point at most once per day and only when it is new or has
+    // moved, so a routine refresh doesn't rewrite the collection (collect.gather).
+    // readiness_history_persist is non-null ONLY when the host should write it back.
+    let readinessHistoryPersist = null;
+    if (isFullComposite && todayIso) {
+      const point = round1(readinessOut.point);
+      const existing = history.find((h) => h.d === todayIso);
+      if (!existing || existing.point !== point) {
+        history = history.filter((h) => h.d !== todayIso);
+        history.push({ d: todayIso, point });
+        readinessHistoryPersist = history;
+      }
+    }
+    // Only project while readiness is a live full composite; otherwise abstain
+    // rather than projecting from a stale snapshot (collect.gather's traj_history).
+    const trajHistory = isFullComposite ? history : [];
+    const rawTarget = asFloat(raw.target);
+    const targetScore = rawTarget ? Math.trunc(rawTarget) : null;
+    // days to exam = exam ordinal - today ordinal, matching collect.gather's
+    // (date.fromisoformat(exam) - date.fromisoformat(today)).days (may be negative).
+    let daysToExam = null;
+    if (typeof raw.exam_date === 'string' && raw.exam_date) {
+      const eo = isoToOrdinal(raw.exam_date), to = isoToOrdinal(todayIso);
+      if (Number.isFinite(eo) && Number.isFinite(to)) daysToExam = eo - to;
+    }
+    const trajectoryOut = trajectory(trajHistory, targetScore, daysToExam, weakestReady);
+
+    return {
+      coverage,
+      coverage_by_section: coverageBySection(covered),
+      outline_version: OUTLINE.version,
+      n_reviews: nReviews,
+      n_cards_seen: rValues.length,
+      ai_used: false,
+      updated: raw.updated || '',
+      best_next: nextTops[0] || null,
+      next_topics: nextTops,
+      book_set: raw.book_set || 'kaplan',
+      section_labels: OUTLINE.sections,
+      thresholds: { memory_cards: CFG.min_cards_memory, performance_outcomes: CFG.min_outcomes_performance, reviews: CFG.giveup_min_reviews, coverage: CFG.giveup_min_coverage },
+      memory: memoryScore(rValues),
+      performance: performanceScore({ n: perfN, k: perfK }),
+      readiness: readinessOut,
+      calibration: calibration(calibPairs),
+      study_pace: studyPace(raw, perfN, conceptsToPractice, rValues.length),
+      confidence: confidenceCalibration(outcomes),
+      mistakes: mistakeTaxonomy(outcomes),
+      study_plan: studyPlanJS(covered, conceptR),
+      pacing: pacingCoach(outcomes),
+      trajectory: trajectoryOut,
+      // The full updated readiness-snapshot history for the host to persist to
+      // HISTORY_CONFIG_KEY, or null when nothing changed (see collect.gather). The
+      // renderer ignores this; only the AnkiDroid bridge reads it.
+      readiness_history_persist: readinessHistoryPersist,
+      // per-concept and per-section paraphrase test (the fluency illusion), matching
+      // collect.gather's fluency_items / transfer so the mobile data equals desktop.
+      fluency_items: fluencyItems,
+      transfer,
+    };
+  };
+
+  // Verification hook (inert; the dashboard never reads it). Exposes the pure
+  // scoring ports so a parity harness can drive them with the SAME inputs as the
+  // Python core (anki.vantage.scoring) and assert bit-for-bit-to-rounding equality
+  // -- the desktop/mobile parity mandate. Kept read-only, like window.__vantageRender.
+  window.__vantageScoring = {
+    CFG, invNormCdf, irtProb, irtInformation, irtEstimate, thetaToScale,
+    irtReadiness, conceptTransferGaps, transferGap, mapAbilityToScale,
+    trajectory, isoToOrdinal,
+  };
+})();
+</script><script>window.__VANTAGE__ = null; window.__VANTAGE_ERR__ = "Something went wrong computing your scores. Tap Refresh to try again.";</script><script>/* Copyright: Ankitects Pty Ltd and contributors
+   License: GNU AGPL, version 3 or later; http://www.gnu.org/licenses/agpl.html */
+/* Vantage dashboard renderer. Reads window.__VANTAGE__ (injected by the add-on),
+   falling back to MOCK for standalone preview. Pure DOM, no framework.
+
+   Every score shows the elements the brief requires: point, range, % of exam
+   covered, a confidence ("how sure") indicator with its reason, last-updated
+   time, and the give-up rule. Worded for the student, not the engineer. */
 
 const ICON = {
   brain: '<path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/><path d="M15 13a4.5 4.5 0 0 1-3-4 4.5 4.5 0 0 1-3 4"/>',
   target: '<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>',
   gauge: '<path d="m12 14 4-4"/><path d="M3.34 19a10 10 0 1 1 17.32 0"/>',
   grid: '<rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/>',
-  shield: '<path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/>',
   refresh: '<path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/>',
   back: '<path d="m12 19-7-7 7-7"/><path d="M19 12H5"/>',
+  fwd: '<path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>',
   layers: '<path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"/>',
   bolt: '<path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/>',
+  play: '<polygon points="6 3 20 12 6 21 6 3"/>',
+  book: '<path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/>',
 };
 
-function svg(name, extra) {
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${extra || ''}">${ICON[name]}</svg>`;
+function svg(name) {
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${ICON[name]}</svg>`;
 }
 const pct = (x) => Math.round(x * 100) + '%';
 const esc = (s) => String(s).replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
@@ -215,44 +1385,77 @@ function bullets(lines) {
   return `<ul class="reasons">${lines.map((l) => `<li>${esc(l)}</li>`).join('')}</ul>`;
 }
 
-function pctCard(kind, iconName, title, sub, s, abstainLine) {
+// Confidence ("how sure") plus its reason, and the % of the exam covered.
+function meta(how, reason, coverage) {
+  const label = how === 'insufficient' ? 'not enough data yet' : how;
+  const conf = `<div class="conf conf--${how}">Confidence: ${label}${reason ? ', ' + reason : ''}</div>`;
+  const cov = coverage == null ? '' : `<div class="cover">${pct(coverage)} of the exam covered</div>`;
+  return `<div class="cardmeta">${conf}${cov}</div>`;
+}
+
+function pctCard(kind, iconName, title, sub, s, coverage, reason, abstainLine) {
   const cls = kind === 'memory' ? 'memory' : 'perf';
+  const head = `<div class="card__top"><div class="iconwrap i-${s.abstained ? 'abstain' : cls}">${svg(iconName)}</div>
+      <div><div class="card__label">${esc(title)}</div><div class="card__sub">${esc(sub)}</div></div></div>`;
   if (s.abstained) {
-    return `<div class="card card--abstain">
-      <div class="card__top"><div class="iconwrap i-abstain">${svg(iconName)}</div>
-        <div><div class="card__label">${esc(title)}</div><div class="card__sub">${esc(sub)}</div></div></div>
+    const cta = kind === 'perf' ? '<button class="card__cta" onclick="vpractice.open()">Start practice</button>' : '';
+    return `<div class="card card--abstain">${head}
       <div class="abstain__title">Not enough data yet</div>
-      ${bullets([abstainLine])}</div>`;
+      ${bullets([abstainLine])}${cta}</div>`;
   }
-  return `<div class="card card--${cls}">
-    <div class="card__top"><div class="iconwrap i-${cls}">${svg(iconName)}</div>
-      <div><div class="card__label">${esc(title)}</div><div class="card__sub">${esc(sub)}</div></div></div>
+  return `<div class="card card--${cls}">${head}
     <div class="metric metric--${cls}"><span class="metric__num">${Math.round(s.point * 100)}</span><span class="metric__unit">%</span></div>
-    <div class="range">likely <b>${pct(s.low)}&ndash;${pct(s.high)}</b></div></div>`;
+    <div class="range"><b>(${pct(s.low)}&ndash;${pct(s.high)})</b></div>
+    ${meta(s.how_sure, reason, coverage)}</div>`;
+}
+
+// Plain-language "how sure" for readiness. When the latent-ability estimate is
+// active, describe the projection from how the student actually answered (which
+// questions, not just how many) and how settled it is, never naming the model or
+// its internals. Otherwise keep the reviews-and-coverage phrasing.
+function readinessReason(s, d) {
+  if (s.model === 'irt_2pl_eap' && s.irt) {
+    let nApp = 0;
+    Object.keys(s.irt).forEach((k) => { nApp += (s.irt[k] && s.irt[k].n) || 0; });
+    const settle = s.how_sure === 'high'
+      ? 'your section scores have settled into a narrow range'
+      : s.how_sure === 'medium'
+        ? 'your section scores are still settling'
+        : 'your section scores can still move a lot';
+    return nApp > 0
+      ? `from how you answered ${nApp} practice question${nApp === 1 ? '' : 's'}, ${settle}`
+      : settle;
+  }
+  return `based on ${d.n_reviews} reviews and ${pct(d.coverage)} of the exam covered`;
 }
 
 function readinessCard(s, labels, d) {
+  const head = `<div class="card__top"><div class="iconwrap i-${s.abstained ? 'abstain' : 'ready'}">${svg('gauge')}</div>
+      <div><div class="card__label">Readiness</div><div class="card__sub">your projected section scores</div></div></div>`;
   if (s.abstained) {
     const items = [];
     if (d.n_reviews < d.thresholds.reviews)
-      items.push(`${d.thresholds.reviews} reviews (you have ${d.n_reviews})`);
+      items.push(`${d.thresholds.reviews} graded reviews (you have ${d.n_reviews})`);
     if (d.coverage < d.thresholds.coverage)
       items.push(`${pct(d.thresholds.coverage)} of the exam covered (you have ${pct(d.coverage)})`);
-    return `<div class="card card--abstain">
-      <div class="card__top"><div class="iconwrap i-abstain">${svg('gauge')}</div>
-        <div><div class="card__label">Readiness</div><div class="card__sub">your projected section scores</div></div></div>
+    if (d.performance.n < d.thresholds.performance_outcomes)
+      items.push(`${d.thresholds.performance_outcomes} exam-style practice questions answered (you have ${d.performance.n})`);
+    return `<div class="card card--abstain">${head}
       <div class="abstain__title">No score yet</div>
-      <p class="abstain__lead">You need:</p>
-      ${bullets(items)}</div>`;
+      <p class="abstain__lead">You need:</p>${bullets(items)}
+      <button class="card__cta" onclick="vpractice.open()">Start practice</button></div>`;
   }
   const subs = Object.entries(s.sections || {}).map(([k, b]) => {
     return `<div class="subrow"><div class="subrow__label">${esc(labels[k] || k)}</div>
-      <div class="subrow__score"><span class="subrow__val">${Math.round(b.point)}</span><span class="subrow__range">likely ${Math.round(b.low)}&ndash;${Math.round(b.high)}</span></div></div>`;
+      <div class="subrow__score"><span class="subrow__val">${Math.round(b.point)}</span><span class="subrow__range">(${Math.round(b.low)}&ndash;${Math.round(b.high)})</span></div></div>`;
   }).join('');
-  return `<div class="card card--ready">
-    <div class="card__top"><div class="iconwrap i-ready">${svg('gauge')}</div>
-      <div><div class="card__label">Readiness</div><div class="card__sub">your projected section scores</div></div></div>
-    <div class="subsections">${subs}</div></div>`;
+  const reason = readinessReason(s, d);
+  const nSec = Object.keys(s.sections || {}).length;
+  const partial = `<div class="readypartial">Covers ${nSec} of the 4 MCAT sections. CARS is not scored.</div>`;
+  return `<div class="card card--ready">${head}
+    <div class="subsections">${subs}</div>
+    ${partial}
+    ${meta(s.how_sure, reason, d.coverage)}</div>`;
 }
 
 function coverageBlock(d) {
@@ -267,24 +1470,523 @@ function coverageBlock(d) {
     <div class="bars">${bars}</div></div>`;
 }
 
-function nextBlock(d) {
-  const bn = d.best_next;
-  if (!bn) return '<div class="nextblock"><div class="deco"></div><div class="nextblock__eyebrow">Study this next</div><div class="nextblock__title">All caught up</div></div>';
+function studyRow(key, label, sub, opts) {
+  const acts = [];
+  if (opts.flashcards) acts.push(`<button class="btn btn--study" onclick="vpy('study:${key}')">${svg('play')} Flashcards</button>`);
+  if (opts.reason) acts.push(`<button class="btn btn--reason" onclick="vpractice.open('${key}')">${svg('book')} Reasoning</button>`);
+  const subHtml = sub ? `<div class="srow__sub">${esc(sub)}</div>` : '';
+  return `<div class="srow srow--${key}">
+    <div class="srow__meta"><div class="srow__name">${esc(label)}</div>${subHtml}</div>
+    <div class="srow__actions">${acts.join('')}</div></div>`;
+}
+
+// The place to click into studying: flashcards for the 3 science sections,
+// reasoning for all 4 (CARS included), and one interleaved-everything option.
+function studyBlock(d) {
+  const labels = d.section_labels || {};
+  const rows = [];
+  rows.push(`<div class="srow srow--all">
+    <div class="srow__meta"><div class="srow__name">Interleaved review</div></div>
+    <div class="srow__actions"><button class="btn btn--study" onclick="vpy('study:interleave')">${svg('layers')} Start mixed review</button></div></div>`);
+  Object.keys(labels).forEach((k) => {
+    rows.push(studyRow(k, labels[k], '', { flashcards: true, reason: true }));
+  });
+  rows.push(studyRow('cars', 'CARS', 'reading reasoning practice', { flashcards: false, reason: true }));
+  return `<section class="section">
+    <div class="section__head"><div class="section__title">Study &amp; practice</div></div>
+    <div class="studygrid">${rows.join('')}</div>
+  </section>`;
+}
+
+// The common full MCAT review sets, by prep-book subject. The student picks the
+// set they own; "Study this next" then names their book. Kaplan and Princeton
+// Review are clean subject sets; Examkrackers splits biology into Molecules
+// (biochem/cell) and Systems, and folds organic chemistry into one combined
+// Chemistry manual (there is no standalone Examkrackers organic chem book).
+const BOOK_SETS = {
+  kaplan: {
+    label: 'Kaplan',
+    books: {
+      'Physics and Math': 'Kaplan MCAT Physics and Math Review',
+      'General Chemistry': 'Kaplan MCAT General Chemistry Review',
+      'Organic Chemistry': 'Kaplan MCAT Organic Chemistry Review',
+      Biochemistry: 'Kaplan MCAT Biochemistry Review',
+      Biology: 'Kaplan MCAT Biology Review',
+      'Behavioral Sciences': 'Kaplan MCAT Behavioral Sciences Review',
+    },
+  },
+  tpr: {
+    label: 'Princeton Review',
+    books: {
+      'Physics and Math': 'The Princeton Review MCAT Physics and Math Review',
+      'General Chemistry': 'The Princeton Review MCAT General Chemistry Review',
+      'Organic Chemistry': 'The Princeton Review MCAT Organic Chemistry Review',
+      Biochemistry: 'The Princeton Review MCAT Biochemistry Review',
+      Biology: 'The Princeton Review MCAT Biology Review',
+      'Behavioral Sciences': 'The Princeton Review MCAT Psychology and Sociology Review',
+    },
+  },
+  ek: {
+    label: 'Examkrackers',
+    books: {
+      'Physics and Math': 'Examkrackers MCAT Physics',
+      'General Chemistry': 'Examkrackers MCAT Chemistry',
+      'Organic Chemistry': 'Examkrackers MCAT Chemistry',
+      Biochemistry: 'Examkrackers MCAT Biology 1: Molecules',
+      Biology: 'Examkrackers MCAT Biology 1 & 2',
+      'Behavioral Sciences': 'Examkrackers MCAT Psychology & Sociology',
+    },
+  },
+};
+
+// Real chapter titles per book set, researched from each publisher's actual
+// tables of contents (Kaplan verified high-confidence against the ebook TOCs;
+// Princeton Review and Examkrackers verified where a genuine TOC was available).
+// Keyed by AAMC concept, then book set. Missing entries fall back to the generic
+// topic below. Examkrackers uses "lectures"; we render them the same way.
+const CHAPTER_BY_BOOK = {
+  '4A': { kaplan: 'Kinematics and Dynamics', tpr: 'Kinematics and Mechanics', ek: 'Motion and Force' },
+  '4B': { kaplan: 'Fluids', tpr: 'Fluids and Elasticity of Solids', ek: 'Fluids' },
+  '4C': { kaplan: 'Electrochemistry', tpr: 'Electrochemistry', ek: 'Solutions and Electrochemistry' },
+  '4D': { kaplan: 'Light and Optics', tpr: 'Light and Geometrical Optics', ek: 'Waves: Sound and Light' },
+  '4E': { kaplan: 'Atomic Structure', tpr: 'Atomic Structure and Periodic Trends', ek: 'Introduction to General Chemistry' },
+  '5A': { kaplan: 'Acids and Bases', tpr: 'Acids and Bases', ek: 'Acids and Bases' },
+  '5B': { kaplan: 'Bonding and Chemical Interactions', tpr: 'Bonding and Intermolecular Forces', ek: 'Introduction to General Chemistry' },
+  '5C': { kaplan: 'Separations and Purifications', tpr: 'Separations and Spectroscopy' },
+  '5D': { kaplan: 'Analyzing Organic Reactions', tpr: 'Biologically Important Molecules', ek: 'Oxygen Containing Reactions' },
+  '5E': { kaplan: 'Thermochemistry', tpr: 'Thermodynamics', ek: 'Thermodynamics and Kinetics' },
+  '1A': { kaplan: 'Amino Acids, Peptides, and Proteins', tpr: 'Amino Acids and Proteins', ek: 'Biological Molecules and Enzymes' },
+  '1B': { kaplan: 'RNA and the Genetic Code', tpr: 'Nucleic Acids', ek: 'Genetics' },
+  '1C': { kaplan: 'Genetics and Evolution', tpr: 'Genetics and Evolution', ek: 'Genetics' },
+  '1D': { kaplan: 'Bioenergetics and Regulation of Metabolism', tpr: 'Carbohydrate Metabolism', ek: 'Metabolism' },
+  '2A': { kaplan: 'The Cell', tpr: 'Eukaryotic Cells', ek: 'The Cell' },
+  '2B': { kaplan: 'The Cell', tpr: 'Microbiology' },
+  '2C': { kaplan: 'Reproduction', tpr: 'Eukaryotic Cells', ek: 'The Cell' },
+  '3A': { kaplan: 'The Nervous System and the Endocrine System', tpr: 'The Nervous and Endocrine Systems', ek: 'The Nervous System and The Endocrine System' },
+  // 3B (the main organ systems) spans many chapters in every set; uses the topic fallback.
+  '6A': { kaplan: 'Sensation and Perception', tpr: 'Sensation, Perception, and Cognition', ek: 'Biological Correlates of Psychology' },
+  '6B': { kaplan: 'Cognition, Consciousness, and Language', tpr: 'Sensation, Perception, and Cognition', ek: 'Thought and Emotion' },
+  '6C': { kaplan: 'Motivation, Emotion, and Stress', tpr: 'Behavioral Neuroscience', ek: 'Thought and Emotion' },
+  '7A': { kaplan: 'Learning and Memory', tpr: 'Behavioral Neuroscience', ek: 'Identity and the Individual' },
+  '7B': { kaplan: 'Social Processes, Attitudes, and Behavior', tpr: 'Social Psychology', ek: 'Relationships and Behavior' },
+  '7C': { kaplan: 'Social Processes, Attitudes, and Behavior', tpr: 'Social Psychology', ek: 'Relationships and Behavior' },
+  '8A': { kaplan: 'Identity and Personality', tpr: 'Social Psychology', ek: 'Identity and the Individual' },
+  '8B': { kaplan: 'Social Thinking', tpr: 'Social Psychology', ek: 'Relationships and Behavior' },
+  '8C': { kaplan: 'Social Interaction', tpr: 'Social Psychology', ek: 'Relationships and Behavior' },
+  '9A': { kaplan: 'Social Structure and Demographics', tpr: 'Sociological Theories and Social Institutions', ek: 'The Biopsychosocial Model, Society and Culture' },
+  '9B': { kaplan: 'Social Structure and Demographics', tpr: 'Sociological Theories and Social Institutions', ek: 'The Biopsychosocial Model, Society and Culture' },
+  '10A': { kaplan: 'Social Stratification', tpr: 'Sociological Theories and Social Institutions', ek: 'The Biopsychosocial Model, Society and Culture' },
+};
+
+// Generic, edition-proof topic per concept. Fallback when a specific book set's
+// real chapter isn't mapped above (e.g. topics that span several chapters).
+const CHAPTER_TOPIC = {
+  '4A': 'translational motion, work, and energy',
+  '4B': 'fluids',
+  '4C': 'electrochemistry and circuits',
+  '4D': 'light, sound, and waves',
+  '4E': 'atomic structure',
+  '5A': 'acids, bases, and solutions',
+  '5B': 'bonding and molecular structure',
+  '5C': 'separations and spectroscopy',
+  '5D': 'functional groups and organic reactions',
+  '5E': 'thermodynamics and kinetics',
+  '1A': 'amino acids, peptides, and proteins',
+  '1B': 'gene expression: transcription and translation',
+  '1C': 'genetics and inheritance',
+  '1D': 'metabolism and bioenergetics',
+  '2A': 'the cell and its membranes',
+  '2B': 'microbiology: prokaryotes and viruses',
+  '2C': 'the cell cycle and division',
+  '3A': 'the nervous and endocrine systems',
+  '3B': 'organ systems and physiology',
+  '6A': 'sensation and perception',
+  '6B': 'cognition, memory, and consciousness',
+  '6C': 'emotion, stress, and motivation',
+  '7A': 'learning and personality',
+  '7B': 'social influence and group behavior',
+  '7C': 'attitudes and persuasion',
+  '8A': 'self-identity',
+  '8B': 'social cognition: attribution and bias',
+  '8C': 'social interaction',
+  '9A': 'social structure and institutions',
+  '9B': 'demographic characteristics and processes',
+  '10A': 'social inequality',
+};
+
+function bookBrand(d) {
+  return d && d.book_set && BOOK_SETS[d.book_set] ? d.book_set : 'kaplan';
+}
+// Khan Academy has no public deep-link API, but its search reliably resolves a
+// concept keyword to the right lesson(s). We link each focus topic to a search
+// for that exact term, so "Study this next" points at real lessons, not a
+// generic landing page. Encode ' too (encodeURIComponent leaves it) so the URL
+// is safe inside the single-quoted onclick handler.
+const KHAN_SEARCH = 'https://www.khanacademy.org/search?page_search_query=';
+function khanQuery(q) {
+  return encodeURIComponent(String(q)).replace(/'/g, '%27');
+}
+function khanClick(q) {
+  return `vpy('open:${KHAN_SEARCH}${khanQuery(q)}');return false`;
+}
+
+let nextIdx = 0;
+
+function nextList(d) {
+  if (d.next_topics && d.next_topics.length) return d.next_topics;
+  return d.best_next ? [d.best_next] : [];
+}
+
+// One ranked topic at a time, with prev/next paging through the rest.
+function renderNextTopic(d) {
+  const list = nextList(d);
+  if (!list.length) return '<div class="deco"></div><div class="nextblock__eyebrow">Study this next</div><div class="nextblock__title">All caught up</div>';
+  if (nextIdx >= list.length) nextIdx = 0;
+  const bn = list[nextIdx];
+  const total = list.length;
   const state = bn.covered ? `${pct(bn.mastery)} recalled` : 'not studied yet';
-  return `<div class="nextblock"><div class="deco"></div>
-    <div class="nextblock__eyebrow">Study this next</div>
+  const subject = bn.subject || '';
+  const brandKey = bookBrand(d);
+  const book = subject ? BOOK_SETS[brandKey].books[subject] || '' : '';
+  const byBook = CHAPTER_BY_BOOK[bn.concept_id] || {};
+  const chapter = byBook[brandKey] || CHAPTER_TOPIC[bn.concept_id] || (bn.topics && bn.topics[0]) || '';
+  const unit = brandKey === 'ek' ? 'lecture' : 'chapter'; // Examkrackers numbers "lectures"
+  const picker = `<select class="bookpick" aria-label="Your MCAT book set" onchange="vbook(this.value)">${Object.keys(
+    BOOK_SETS,
+  )
+    .map((k) => `<option value="${k}"${k === brandKey ? ' selected' : ''}>${esc(BOOK_SETS[k].label)}</option>`)
+    .join('')}</select>`;
+  const readRow = book
+    ? `<div class="where__row where__row--book"><span class="where__k">Read</span><span class="where__val">
+         <span class="where__book">${esc(book)}</span>
+         ${chapter ? `<span class="where__chapter">${esc(chapter)} ${unit}</span>` : ''}</span>${picker}</div>`
+    : '';
+  const topicList = bn.topics && bn.topics.length ? bn.topics : [];
+  const topicLinks = topicList
+    .map((t) => `<a href="#" onclick="${khanClick(t)}">${esc(t)}</a>`)
+    .join('<span class="where__sep">&middot;</span>');
+  const focusRow = topicLinks
+    ? `<div class="where__row"><span class="where__k">Focus on</span><span class="where__val">
+         <span class="where__links">${topicLinks}</span>
+         <span class="where__cap">Each opens a free Khan Academy lesson</span></span></div>`
+    : '';
+  const where = subject ? `<div class="nextblock__where">
+      ${readRow}
+      ${focusRow}
+    </div>` : '';
+  const pager = total > 1 ? `<div class="nextpager">
+      <button class="nextnav" ${nextIdx === 0 ? 'disabled' : ''} onclick="vnext(-1)" aria-label="Previous topic">${svg('back')}</button>
+      <span class="nextpager__count">${nextIdx + 1} of ${total}</span>
+      <button class="nextnav" ${nextIdx === total - 1 ? 'disabled' : ''} onclick="vnext(1)" aria-label="Next topic">${svg('fwd')}</button>
+    </div>` : '';
+  return `<div class="deco"></div>
+    <div class="nextblock__head"><div class="nextblock__eyebrow">Study this next</div>${pager}</div>
     <div class="nextblock__title">${esc(bn.name)}</div>
     <div class="nextblock__meta">
       <span class="tag tag--accent">${esc((d.section_labels && d.section_labels[bn.section]) || bn.section)}</span>
       <span class="tag">${esc(state)}</span>
-    </div></div>`;
+    </div>
+    ${where}`;
+}
+
+function nextBlock(d) {
+  nextIdx = 0;
+  return `<div class="nextblock" id="nextblock">${renderNextTopic(d)}</div>`;
+}
+
+window.vnext = function (dir) {
+  const d = window.__VANTAGE__ || (window.__VANTAGE_LIVE__ ? null : MOCK);
+  if (!d) return;
+  const list = nextList(d);
+  nextIdx = Math.max(0, Math.min(list.length - 1, nextIdx + dir));
+  const el = document.getElementById('nextblock');
+  if (el) el.innerHTML = renderNextTopic(d);
+};
+
+// Switch the student's book set. Update the display in place (keeping the paged
+// topic) and persist the choice; the host stores it without forcing a reload.
+window.vbook = function (brand) {
+  const d = window.__VANTAGE__ || (window.__VANTAGE_LIVE__ ? null : MOCK);
+  if (!d) return;
+  d.book_set = brand;
+  const el = document.getElementById('nextblock');
+  if (el) el.innerHTML = renderNextTopic(d);
+  if (window.pycmd) vpy('bookset:' + brand);
+};
+
+function planItem(num, label, hint) {
+  return `<div class="plan__item"><div class="plan__num">${num}</div>
+    <div class="plan__lbl">${esc(label)}<span class="plan__hint">${esc(hint)}</span></div></div>`;
+}
+
+// Countdown to the exam plus a transparent daily target (a stated heuristic).
+function planBlock(d) {
+  const p = d.study_pace;
+  if (!p) return '';
+  const input = `<input class="datein" type="date" value="${esc(p.exam_date || '')}" onchange="vpy('examdate:' + this.value)">`;
+  if (!p.has_exam_date || p.passed) {
+    const msg = p.message || 'Set your exam date to get a daily study target.';
+    return `<section class="section"><div class="plancard plancard--set">
+      <div class="plan__eyebrow">Exam countdown</div>
+      <div class="plan__setrow"><div class="plan__title">${esc(msg)}</div><div>${input}</div></div>
+    </div></section>`;
+  }
+  const dayWord = p.days_left === 1 ? 'day' : 'days';
+  const s = (n) => (n === 1 ? '' : 's');
+  const dl = p.days_left && p.days_left > 0 ? p.days_left : 1;
+  // Pace scales with how close the exam is: the same work spread over fewer days
+  // means more per day. When it works out to less than one a day, show a weekly
+  // cadence so the number still moves as you change the date.
+  const pace = (remaining, noun, hint) => {
+    const rate = remaining / dl;
+    if (rate >= 1) {
+      const n = Math.ceil(rate);
+      return planItem(n, `${noun}${s(n)} a day`, hint);
+    }
+    const n = Math.max(1, Math.ceil(rate * 7));
+    return planItem(n, `${noun}${s(n)} a week`, hint);
+  };
+  const flash = p.flashcards_per_day || p.reviews_due;
+  const flashHint = flash > p.reviews_due ? 'to get through your deck by exam day' : 'chosen for you today';
+  const items = [planItem(flash, `flashcard${s(flash)} to study today`, flashHint)];
+  if (p.new_remaining > 0) items.push(pace(p.new_remaining, 'new card', `${p.new_remaining} new cards left`));
+  // Reasoning is a real daily study goal (a few a day, more as the exam nears),
+  // so show the backend's per-day number, not a countdown to the confidence bar.
+  if (p.reasoning_per_day > 0) {
+    const n = p.reasoning_per_day;
+    const hint = p.reasoning_remaining > 0 ? `${p.reasoning_remaining} more to a confident score` : 'keeps your score sharp';
+    items.push(planItem(n, `reasoning question${s(n)} a day`, hint));
+  }
+  return `<section class="section"><div class="plancard">
+    <div class="plan__eyebrow">Exam countdown</div>
+    <div class="plan__count"><span class="plan__days">${p.days_left}</span> ${dayWord} until your MCAT</div>
+    <div class="plan__daterow">${input}</div>
+    <div class="plan__grid">${items.join('')}</div>
+    <div class="plan__note">To stay on pace: clear today's flashcards and keep up your daily reasoning practice.</div>
+  </div></section>`;
+}
+
+// Compares recall (what you remember) with accuracy on real questions. A gap
+// means recognizing an answer is not the same as reasoning to it. Student-facing:
+// no model or statistics terms, just the two numbers and what they mean.
+function calibrationBlock(d) {
+  const c = d.calibration;
+  if (!c) return '';
+  const head = '<div class="section__head"><div class="section__title">Memory vs. real performance</div></div>';
+  if (c.abstained) {
+    return `<section class="section">${head}
+      <div class="coverblock">
+        <div class="abstain__title">Not enough practice yet</div>
+        <p class="abstain__lead">Answer a few more practice questions to see whether what you remember holds up on new questions.</p>
+      </div></section>`;
+  }
+  const ok = c.well_calibrated;
+  const verdict = ok
+    ? 'What you remember lines up with how you do on questions.'
+    : 'You remember more than you can use on new questions yet.';
+  const fromMem = Math.round(c.mean_predicted * 100);
+  const onReal = Math.round(c.mean_observed * 100);
+  return `<section class="section">${head}
+    <div class="coverblock">
+      <div class="calibsummary calibverdict--${ok ? 'ok' : 'off'}"><b>${verdict}</b></div>
+      <div class="calib">
+        <div class="calibbar"><span class="calibbar__k">From memory</span><div class="calibbar__track"><div class="calibbar__fill calibbar__fill--pred" style="width:${fromMem}%"></div></div><span class="calibbar__v">${fromMem}%</span></div>
+        <div class="calibbar"><span class="calibbar__k">On real questions</span><div class="calibbar__track"><div class="calibbar__fill calibbar__fill--obs" style="width:${onReal}%"></div></div><span class="calibbar__v">${onReal}%</span></div>
+      </div>
+      ${meta(c.how_sure, 'based on ' + c.n + ' questions', null)}
+    </div></section>`;
+}
+
+// The fluency illusion, concept by concept: topics recalled well on cards but
+// missed once the question is reworded. The app's core thesis, made specific.
+// The scoring layer lists a concept only after enough real answers and puts the
+// widest gap first, so an empty list is honest silence, not a blank slate.
+function fluencyPanel(d) {
+  const items = d.fluency_items || [];
+  const head = '<div class="section__head"><div class="section__title">Recall vs. using it</div></div>';
+  const risks = items.filter((x) => x.fluency_risk);
+  if (!risks.length) {
+    const lead = items.length
+      ? 'On the concepts you have practiced, your recall and your answers line up. Nothing to flag here.'
+      : 'Answer a few reworded questions on concepts you have studied. Any recall you cannot yet apply will show up here.';
+    return `<section class="section">${head}<div class="coverblock">
+      <div class="abstain__title">No recall gaps to flag</div>
+      <p class="abstain__lead">${lead}</p>
+    </div></section>`;
+  }
+  const rows = risks.slice(0, 5).map((x) => {
+    const name = x.name || x.concept_id;
+    const label = (d.section_labels && d.section_labels[x.section]) || x.section || '';
+    const rec = Math.round(x.recall * 100);
+    const app = Math.round(x.application * 100);
+    return `<div class="flurow">
+      <div class="flurow__head"><span class="flurow__name">${esc(name)}</span>${label ? `<span class="fluchip">${esc(label)}</span>` : ''}</div>
+      <div class="flubar"><span class="flubar__k">Recall</span><div class="flubar__track"><div class="flubar__fill flubar__fill--rec" style="width:${rec}%"></div></div><span class="flubar__v">${rec}%</span></div>
+      <div class="flubar"><span class="flubar__k">On questions</span><div class="flubar__track"><div class="flubar__fill flubar__fill--app" style="width:${app}%"></div></div><span class="flubar__v">${app}%</span></div>
+    </div>`;
+  }).join('');
+  const n = risks.length;
+  return `<section class="section">${head}<div class="coverblock">
+    <div class="calibsummary"><b>You recall these well but miss them when the wording changes.</b> Practice them as questions, not just cards.</div>
+    <div class="flulist">${rows}</div>
+    <div class="cover" style="margin-top:0.85rem">${n === 1 ? '1 concept' : n + ' concepts'} where recall runs ahead of what you can apply</div>
+  </div></section>`;
+}
+
+const CONF_LABELS = { guess: 'Guessing', unsure: 'Unsure', sure: 'Sure' };
+const CONF_ORDER = { guess: 0, unsure: 1, sure: 2 };
+const MISS_LABELS = { content: 'Content gap', misread: 'Misread the question', trap: 'Trap answer', time: 'Rushed the reasoning', math: 'Arithmetic slip' };
+
+// Metacognition: did feeling sure line up with being right?
+function confidencePanel(d) {
+  const c = d.confidence;
+  if (!c) return '';
+  const head = '<div class="section__head"><div class="section__title">Confidence check</div></div>';
+  if (c.abstained) {
+    return `<section class="section">${head}<div class="coverblock">
+      <div class="abstain__title">Not enough answers yet</div>
+      <p class="abstain__lead">Mark how sure you are on each practice question. After a few, you'll see whether your confidence matches your results.</p>
+    </div></section>`;
+  }
+  const rows = (c.levels || []).slice().sort((a, b) => CONF_ORDER[a.level] - CONF_ORDER[b.level]).map((l) => `<div class="calibbar">
+      <span class="calibbar__k">${CONF_LABELS[l.level] || l.level} (${l.n})</span>
+      <div class="calibbar__track"><div class="calibbar__fill calibbar__fill--obs" style="width:${Math.round(l.rate * 100)}%"></div></div>
+      <span class="calibbar__v">${pct(l.rate)}</span></div>`).join('');
+  return `<section class="section">${head}<div class="coverblock">
+    <div class="calibsummary"><b>${esc(c.insight)}</b></div>
+    <div class="calib">${rows}</div>
+    <div class="cover" style="margin-top:0.85rem">right answers by how sure you felt, based on ${c.n} answers</div>
+  </div></section>`;
+}
+
+// Diagnosis: which failure mode costs the most points, and where.
+function mistakesPanel(d) {
+  const m = d.mistakes;
+  if (!m) return '';
+  const head = '<div class="section__head"><div class="section__title">How you lose points</div></div>';
+  if (m.abstained) {
+    return `<section class="section">${head}<div class="coverblock">
+      <div class="abstain__title">Not enough misses to diagnose</div>
+      <p class="abstain__lead">When you miss a question, tag why. You'll see which kind of mistake costs you the most points.</p>
+    </div></section>`;
+  }
+  const max = Math.max(...(m.items || []).map((x) => x.count), 1);
+  const rows = (m.items || []).map((x) => `<div class="calibbar">
+      <span class="calibbar__k">${esc(MISS_LABELS[x.reason] || x.reason)}</span>
+      <div class="calibbar__track"><div class="calibbar__fill calibbar__fill--pred" style="width:${Math.round((x.count / max) * 100)}%"></div></div>
+      <span class="calibbar__v">${x.count}</span></div>`).join('');
+  const secLabel = (d.section_labels && d.section_labels[m.top_section]) || m.top_section || '';
+  const topLabel = (MISS_LABELS[m.top_reason] || m.top_reason || '').toLowerCase();
+  const lead = m.top_reason ? `Most points lost to <b>${esc(topLabel)}</b>${secLabel ? ', mostly in ' + esc(secLabel) : ''}.` : '';
+  return `<section class="section">${head}<div class="coverblock">
+    <div class="calibsummary">${lead}</div>
+    <div class="calib">${rows}</div>
+    <div class="cover" style="margin-top:0.85rem">based on ${m.n_wrong} missed questions</div>
+  </div></section>`;
+}
+
+// Content before transfer: learn on flashcards first, then practice reasoning.
+function planPanel(d) {
+  const p = d.study_plan;
+  if (!p || (!(p.study || []).length && !(p.practice || []).length)) return '';
+  const chips = (list, empty) => (list && list.length ? list.slice(0, 5).map((x) => `<span class="planchip">${esc(x.name)}</span>`).join('') : `<span class="planempty">${empty}</span>`);
+  return `<section class="section">
+    <div class="section__head"><div class="section__title">Learn first, then practice</div></div>
+    <div class="plansplit">
+      <div class="plancol"><div class="plancol__h">Learn first, on flashcards</div><div class="planchips">${chips(p.study, 'nothing pressing')}</div></div>
+      <div class="plancol plancol--ready"><div class="plancol__h">Ready to practice, with reasoning</div><div class="planchips">${chips(p.practice, 'study a bit more first')}</div></div>
+    </div>
+  </section>`;
+}
+
+// Pace-to-finish: your median time per question vs the real section budget.
+function pacingPanel(d) {
+  const p = d.pacing;
+  if (!p) return '';
+  const head = '<div class="section__head"><div class="section__title">Pacing</div></div>';
+  if (p.abstained) {
+    return `<section class="section">${head}<div class="coverblock">
+      <div class="abstain__title">Not enough timed questions yet</div>
+      <p class="abstain__lead">Each practice question is timed. After a few, you'll see whether you'd finish each section before time runs out.</p>
+    </div></section>`;
+  }
+  const rows = (p.sections || []).map((s) => {
+    const label = (d.section_labels && d.section_labels[s.section]) || (s.section === 'cars' ? 'CARS' : s.section);
+    const verdict = s.on_pace ? `finishes with ${s.spare_min} min to spare` : `runs out with ${s.projected_left} unanswered`;
+    return `<div class="pacerow">
+      <div class="pacerow__sec">${esc(label)}</div>
+      <div class="pacerow__nums"><span class="pacerow__you pacerow__you--${s.on_pace ? 'ok' : 'off'}">${Math.round(s.median_sec)}s</span><span class="pacerow__t"> / ${Math.round(s.target_sec)}s budget</span></div>
+      <div class="pacerow__verdict pacerow__verdict--${s.on_pace ? 'ok' : 'off'}">${esc(verdict)}</div>
+    </div>`;
+  }).join('');
+  const lead = p.overall_on_pace ? 'You are finishing sections in time.' : 'At this pace you would not finish every section.';
+  return `<section class="section">${head}<div class="coverblock">
+    <div class="calibsummary"><b>${lead}</b></div>
+    <div class="pacelist">${rows}</div>
+    <div class="cover" style="margin-top:0.85rem">your typical time per question vs each section's time budget</div>
+  </div></section>`;
+}
+
+// Project the readiness composite to exam day at your current rate of improvement.
+function trajectoryPanel(d) {
+  const t = d.trajectory;
+  if (!t) return '';
+  const head = '<div class="section__head"><div class="section__title">Score trajectory</div></div>';
+  const input = `<input class="targetin" type="number" min="354" max="396" placeholder="target" value="${t.target || ''}" onchange="vpy('target:' + this.value)">`;
+  if (t.abstained) {
+    return `<section class="section">${head}<div class="coverblock">
+      <div class="plan__setrow"><div class="plan__title">${esc(t.reason || 'Set a target score and an exam date.')}</div><div>Target: ${input}</div></div>
+    </div></section>`;
+  }
+  const secLabel = (d.section_labels && d.section_labels[t.weakest_section]) || t.weakest_section || '';
+  const verdict = t.on_pace ? 'On pace to hit your target.' : `Behind your target${secLabel ? ', focus on ' + esc(secLabel) : ''}.`;
+  const wk = (t.per_week > 0 ? '+' : '') + t.per_week;
+  return `<section class="section">${head}<div class="coverblock">
+    <div class="calibsummary calibverdict--${t.on_pace ? 'ok' : 'off'}"><b>${verdict}</b></div>
+    <div class="trajstats">
+      <div class="trajstat"><span class="trajstat__num">${t.projected}</span><span class="trajstat__lbl">projected by exam day</span></div>
+      <div class="trajstat"><span class="trajstat__num">${t.target}</span><span class="trajstat__lbl">your target</span></div>
+      <div class="trajstat"><span class="trajstat__num">${wk}</span><span class="trajstat__lbl">points per week</span></div>
+    </div>
+    <div class="cover" style="margin-top:0.85rem">Covers your three section scores, not CARS yet. Change target: ${input}</div>
+  </div></section>`;
+}
+
+// Honest empty state: the live app failed to compute scores. Never fall back to
+// the demo numbers here, that would show fabricated results as if they were real.
+function errorCard() {
+  const msg = window.__VANTAGE_ERR__ || 'Something went wrong computing your scores. Tap Refresh to try again.';
+  return `
+  <header class="masthead">
+    <div class="masthead__deco"><span class="c1"></span><span class="c2"></span><span class="sq"></span></div>
+    <div class="masthead__row">
+      <div><div class="brand__mark">Vantage<span class="dot">.</span></div></div>
+      <div class="toolbar">
+        <button class="btn btn--ghost" onclick="vpy('back')">${svg('back')} Back to Anki</button>
+      </div>
+    </div>
+  </header>
+  <section class="section">
+    <div class="card card--abstain">
+      <div class="abstain__title">Couldn't load your scores</div>
+      <p class="abstain__lead">${esc(msg)}</p>
+      <button class="card__cta" onclick="vpy('refresh')">Refresh</button>
+    </div>
+  </section>`;
 }
 
 function render() {
-  const d = window.__VANTAGE__ || MOCK;
+  const live = window.__VANTAGE_LIVE__;
+  const d = window.__VANTAGE__ || (live ? null : MOCK);
   const app = document.getElementById('app');
+  if (live && !d) {
+    app.innerHTML = errorCard();
+    return;
+  }
   const memAbstain = `Study at least ${d.thresholds.memory_cards} cards to see this. You've studied ${d.memory.n}.`;
   const perfAbstain = `Answer at least ${d.thresholds.performance_outcomes} new questions to see this. You've answered ${d.performance.n}.`;
+  const memReason = `based on ${d.memory.n} cards studied`;
+  const perfReason = `based on ${d.performance.n} questions answered`;
   app.innerHTML = `
   <header class="masthead">
     <div class="masthead__deco"><span class="c1"></span><span class="c2"></span><span class="sq"></span></div>
@@ -292,33 +1994,49 @@ function render() {
       <div><div class="brand__mark">Vantage<span class="dot">.</span></div></div>
       <div class="toolbar">
         <button class="btn btn--ghost" onclick="vpy('refresh')">${svg('refresh')} Refresh</button>
-        <button class="btn btn--primary" onclick="vpy('back')">${svg('back')} Back to Anki</button>
+        <button class="btn btn--ghost" onclick="vpy('back')">${svg('back')} Back to Anki</button>
       </div>
     </div>
     <div class="chips">
       <span class="chip">${svg('grid')} ${pct(d.coverage)} of the exam covered</span>
       <span class="chip">${svg('bolt')} ${d.n_reviews} reviews</span>
-      <span class="chip">${svg('layers')} ${d.n_cards_seen} cards studied</span>
     </div>
   </header>
 
+  ${planBlock(d)}
+
   <section class="section">
     <div class="scores">
-      ${pctCard('memory', 'brain', 'Memory', 'how well you remember your cards', d.memory, memAbstain)}
-      ${pctCard('perf', 'target', 'Performance', 'how well you apply it to new questions', d.performance, perfAbstain)}
+      ${pctCard('memory', 'brain', 'Memory', 'how well you remember your cards', d.memory, d.coverage, memReason, memAbstain)}
+      ${pctCard('perf', 'target', 'Performance', 'how well you apply it to new questions', d.performance, d.coverage, perfReason, perfAbstain)}
       ${readinessCard(d.readiness, d.section_labels, d)}
     </div>
   </section>
+
+  ${studyBlock(d)}
+
+  ${planPanel(d)}
 
   <section class="section">
     <div class="section__head"><div class="section__title">Exam coverage</div></div>
     <div class="coverage">${coverageBlock(d)}${nextBlock(d)}</div>
   </section>
 
-  <div class="footmeta"><span>Updated ${esc(d.updated)}</span></div>`;
+  <div class="insights">
+    ${calibrationBlock(d)}
+    ${fluencyPanel(d)}
+    ${confidencePanel(d)}
+    ${mistakesPanel(d)}
+    ${pacingPanel(d)}
+    ${trajectoryPanel(d)}
+  </div>
+
+  <p class="giveup">No readiness score until you have ${d.thresholds.reviews} graded reviews, ${pct(d.thresholds.coverage)} of the exam covered, and some exam-style practice questions.</p>
+
+  <div class="footmeta"><span>Scores updated ${esc(d.updated)}</span></div>`;
 }
 
-// Bridge to the Anki add-on (no-op in standalone preview).
+// Bridge to the app (desktop add-on or the AnkiDroid WebView). No-op in preview.
 window.vpy = function (cmd) { try { pycmd('vantage:' + cmd); } catch (e) { console.log('vpy', cmd); } };
 
 const MOCK = {
@@ -326,12 +2044,558 @@ const MOCK = {
   outline_version: 'aamc-approx-2023.v1', n_reviews: 240, n_cards_seen: 72, ai_used: false, updated: '2026-07-01 08:00',
   section_labels: { chem_phys: 'Chem/Phys', bio_biochem: 'Bio/Biochem', psych_soc: 'Psych/Soc' },
   thresholds: { memory_cards: 20, performance_outcomes: 20, reviews: 200, coverage: 0.5 },
-  best_next: { concept_id: '8B', name: 'Social thinking', section: 'psych_soc', weight: 3, mastery: 0.0, covered: false, priority: 3.0 },
-  memory: { abstained: false, point: 0.89, low: 0.87, high: 0.90, how_sure: 'medium', n: 72, reasons: [] },
+  best_next: { concept_id: '8B', name: 'Social thinking', section: 'psych_soc', weight: 3, mastery: 0.0, covered: false, priority: 3.0,
+    subject: 'Behavioral Sciences', topics: ['attribution', 'prejudice', 'stereotypes', 'social cognition'] },
+  next_topics: [
+    { concept_id: '8B', name: 'Social thinking', section: 'psych_soc', mastery: 0.0, covered: false, subject: 'Behavioral Sciences', topics: ['attribution', 'prejudice', 'stereotypes', 'social cognition'] },
+    { concept_id: '1A', name: 'Structure and function of proteins and amino acids', section: 'bio_biochem', mastery: 0.22, covered: true, subject: 'Biochemistry', topics: ['amino acids', 'proteins', 'enzymes', 'protein structure'] },
+    { concept_id: '5D', name: 'Structure, function, and reactivity of biological molecules', section: 'chem_phys', mastery: 0.31, covered: true, subject: 'Organic Chemistry', topics: ['organic chemistry', 'functional groups', 'reactions', 'stereochemistry'] },
+  ],
+  memory: { abstained: false, point: 0.89, low: 0.87, high: 0.90, how_sure: 'high', n: 72, reasons: [] },
   performance: { abstained: false, point: 0.66, low: 0.57, high: 0.73, how_sure: 'medium', n: 96, reasons: [] },
   readiness: { abstained: false, point: 376, low: 368, high: 381, how_sure: 'medium', n: 240, cars_modeled: false,
+    model: 'irt_2pl_eap', modeled_sections: ['chem_phys', 'bio_biochem', 'psych_soc'],
+    irt: { chem_phys: { theta: -0.2, theta_sd: 0.42, information: 7.1, n: 22 }, bio_biochem: { theta: 0.3, theta_sd: 0.38, information: 9.4, n: 28 }, psych_soc: { theta: 0.0, theta_sd: 0.55, information: 5.2, n: 16 } },
     sections: { chem_phys: { point: 124, low: 120, high: 128 }, bio_biochem: { point: 126, low: 122, high: 129 }, psych_soc: { point: 125, low: 121, high: 128 } }, reasons: [] },
+  fluency_items: [
+    { concept_id: '1A', name: 'Structure and function of proteins and amino acids', section: 'bio_biochem', recall: 0.91, application: 0.44, gap: 0.47, n_app: 9, fluency_risk: true },
+    { concept_id: '5A', name: 'Acids, bases, and their equilibria', section: 'chem_phys', recall: 0.86, application: 0.55, gap: 0.31, n_app: 6, fluency_risk: true },
+    { concept_id: '8B', name: 'Social thinking', section: 'psych_soc', recall: 0.80, application: 0.62, gap: 0.18, n_app: 5, fluency_risk: true },
+  ],
+  calibration: { abstained: false, how_sure: 'medium', n: 24, brier: 0.187, mean_predicted: 0.89, mean_observed: 0.71, well_calibrated: false,
+    bins: [{ lo: 0.6, hi: 0.8, n: 8, pred_mean: 0.72, obs_rate: 0.75 }, { lo: 0.8, hi: 1.0, n: 16, pred_mean: 0.93, obs_rate: 0.69 }] },
+  study_pace: { has_exam_date: true, exam_date: '2026-08-30', days_left: 60, passed: false, reviews_due: 32, flashcards_per_day: 32,
+    new_remaining: 0, new_per_day: 0, reasoning_target: 60, reasoning_done: 24, reasoning_remaining: 36, reasoning_per_day: 5 },
+  confidence: { abstained: false, n: 24, insight: 'When you felt sure you were right 70%. Slow down on the ones you are sure about.',
+    levels: [{ level: 'guess', n: 6, rate: 0.5 }, { level: 'unsure', n: 8, rate: 0.62 }, { level: 'sure', n: 10, rate: 0.7 }] },
+  mistakes: { abstained: false, n_wrong: 8, top_reason: 'trap', top_section: 'psych_soc',
+    items: [{ reason: 'trap', count: 4 }, { reason: 'content', count: 2 }, { reason: 'misread', count: 1 }, { reason: 'time', count: 1 }] },
+  study_plan: { study: [{ name: 'Social inequality' }, { name: 'Electrochemistry and electrical circuits' }],
+    practice: [{ name: 'Structure and function of proteins and amino acids' }, { name: 'Principles of bioenergetics and fuel molecule metabolism' }] },
+  pacing: { abstained: false, n: 24, overall_on_pace: false, sections: [
+    { section: 'chem_phys', n: 8, median_sec: 112, target_sec: 97, on_pace: false, projected_left: 9, spare_min: 0 },
+    { section: 'bio_biochem', n: 8, median_sec: 78, target_sec: 97, on_pace: true, projected_left: 0, spare_min: 18.4 },
+    { section: 'psych_soc', n: 8, median_sec: 70, target_sec: 97, on_pace: true, projected_left: 0, spare_min: 26.5 }] },
+  trajectory: { abstained: false, projected: 388, target: 396, on_pace: false, per_week: 6.5, weakest_section: 'psych_soc', reason: '' },
 };
 
+// Exposed so the AnkiDroid host can re-render after injecting live collection data.
+window.__vantageRender = render;
 document.addEventListener('DOMContentLoaded', render);
+</script><script>/* Copyright: Ankitects Pty Ltd and contributors
+   License: GNU AGPL, version 3 or later; http://www.gnu.org/licenses/agpl.html */
+/* Vantage reasoning practice. Passage-based application questions, the same
+   tagged application-item type the Performance and Readiness scores read. Opens
+   inside the dashboard via window.vpractice.open(section); results are reported
+   through vpy so the host can fold them into the per-section Performance score.
+   Four banks: CARS reading reasoning, plus one science-reasoning set each for
+   Chem/Phys, Bio/Biochem, and Psych/Soc. */
+(function () {
+  const BANKS = {
+    cars: {
+      title: 'CARS practice',
+      passage: {
+        label: 'Passage',
+        paragraphs: [
+          "Every translation is an argument about what a text is for. The translator who renders a poem line by line, keeping its literal sense, treats meaning as cargo to be carried across intact. Another, who reworks the rhythm and lets a metaphor shift to keep the music alive, treats the poem as an experience to be reproduced in a reader who will never see the original. Neither is simply right. The first risks delivering a faithful corpse: accurate, and dead on the page. The second risks writing a new poem and signing someone else's name to it.",
+          "What both share is a refusal to pretend the problem away. The worst translations are not the boldest but the most complacent, the ones that assume a word in one language has a twin waiting in another. Languages are not codes for one fixed set of ideas; they carve the world at different joints. To translate honestly is to choose, again and again, which loss to accept. The reader who wants a translation with no loss at all is asking for the original, and the original is the one thing they cannot read.",
+        ],
+      },
+      questions: [
+        {
+          stem: "The central claim of the passage is that translation:",
+          choices: [
+            "should always preserve a text's literal meaning",
+            "is impossible and not worth attempting",
+            "means choosing which losses to accept, with no loss-free option",
+            "is easiest when two languages share common roots",
+          ],
+          answer: 2,
+          explain: "The author rejects both extremes as not simply right and lands on translation as a repeated choice of which loss to accept.",
+        },
+        {
+          stem: "By a faithful corpse, the author most nearly means a translation that is:",
+          choices: [
+            "accurate in wording but lifeless as a reading experience",
+            "altered to sound more beautiful than the original",
+            "revised so often it lost its author",
+            "focused on music at the expense of sense",
+          ],
+          answer: 0,
+          explain: "It pairs with accurate, and dead on the page: literal fidelity that loses the living experience of the text.",
+        },
+        {
+          stem: "The author regards translators who assume a word has a twin waiting in another language as:",
+          choices: [
+            "admirably cautious",
+            "the most complacent, and the worst",
+            "bold but forgivable",
+            "rare in current practice",
+          ],
+          answer: 1,
+          explain: "The passage calls these the most complacent and ties them to the worst translations.",
+        },
+        {
+          stem: "The final sentence about wanting no loss at all mainly serves to:",
+          choices: [
+            "offer a practical tip for picking a translation",
+            "show that the demand for a loss-free translation defeats itself",
+            "concede that translation is usually pointless",
+            "open a separate argument about how people read",
+          ],
+          answer: 1,
+          explain: "Wanting zero loss means wanting the original, which the reader cannot read, so the demand collapses on itself.",
+        },
+        {
+          stem: "The phrase languages carve the world at different joints most directly supports the idea that:",
+          choices: [
+            "grammar rules are essentially the same across languages",
+            "different languages divide meaning in non-matching ways",
+            "translation is a mechanical, rule-based process",
+            "older languages are harder to translate",
+          ],
+          answer: 1,
+          explain: "If languages carve the world differently, their words do not map one-to-one, which is why a loss-free translation is impossible.",
+        },
+        {
+          stem: "The author would most likely call treating language as a code for one fixed set of ideas:",
+          choices: [
+            "the safest approach for a translator",
+            "a mistake that produces complacent translations",
+            "necessary for scientific texts",
+            "the only honest way to translate",
+          ],
+          answer: 1,
+          explain: "The code assumption is exactly what the author ties to the most complacent, and worst, translations.",
+        },
+      ],
+    },
+
+    chem_phys: {
+      title: 'Chem/Phys reasoning',
+      passage: {
+        label: 'Experiment',
+        paragraphs: [
+          "A biochemist prepares a buffer by dissolving equal molar amounts of acetic acid (pKa = 4.76) and its conjugate base, sodium acetate, in water. She measures the pH as 4.76.",
+          "She then adds a small volume of concentrated HCl and stirs; the pH falls only slightly, to 4.70. Adding the same amount of HCl to pure water instead produces a far larger drop in pH.",
+        ],
+      },
+      questions: [
+        {
+          stem: "The pH barely changes because the added H+ is consumed mainly by:",
+          choices: [
+            "acetic acid molecules",
+            "acetate ions acting as a base",
+            "water autoionization",
+            "chloride ions",
+          ],
+          answer: 1,
+          explain: "In a buffer, the conjugate base (acetate) neutralizes added strong acid, so the free H+ concentration barely rises.",
+        },
+        {
+          stem: "The initial pH equals the pKa because, at equal concentrations of acid and conjugate base:",
+          choices: [
+            "the log term in the Henderson-Hasselbalch equation is zero",
+            "the solution is effectively pure water",
+            "the acid is now fully dissociated",
+            "Kw becomes equal to 1",
+          ],
+          answer: 0,
+          explain: "pH = pKa + log([A-]/[HA]); when [A-] = [HA], log(1) = 0, so pH = pKa.",
+        },
+        {
+          stem: "To instead prepare a buffer at pH 5.76 from the same acid, the ratio [acetate]/[acetic acid] should be about:",
+          choices: [
+            "1 to 10",
+            "1 to 1",
+            "10 to 1",
+            "100 to 1",
+          ],
+          answer: 2,
+          explain: "5.76 = 4.76 + log(ratio) gives log(ratio) = 1, so the ratio is 10 to 1 (more conjugate base than acid).",
+        },
+        {
+          stem: "Adding a small amount of strong base (OH-) to the original equimolar buffer would:",
+          choices: [
+            "raise the pH sharply, as it would in pure water",
+            "change the pH only slightly, consumed by acetic acid",
+            "have no measurable effect at all",
+            "immediately destroy the buffer",
+          ],
+          answer: 1,
+          explain: "The weak acid neutralizes added base, so pH shifts little: a buffer resists change in both directions.",
+        },
+        {
+          stem: "A reaction has dH = +40 kJ/mol and dS = +120 J/(mol*K). It becomes spontaneous when:",
+          choices: [
+            "the temperature is high enough that T*dS exceeds dH",
+            "the temperature is as low as possible",
+            "never, because positive dH forbids spontaneity",
+            "a catalyst is added",
+          ],
+          answer: 0,
+          explain: "dG = dH - T*dS; with both positive, raising T makes T*dS outweigh dH, so dG turns negative (spontaneous).",
+        },
+        {
+          stem: "Adding a catalyst speeds the reaction because it:",
+          choices: [
+            "shifts the equilibrium toward products",
+            "lowers the activation energy for both directions",
+            "raises the system's temperature",
+            "increases the enthalpy change",
+          ],
+          answer: 1,
+          explain: "A catalyst opens a lower-activation-energy path (forward and reverse equally); it speeds the rate without changing dG or the equilibrium position.",
+        },
+      ],
+    },
+
+    bio_biochem: {
+      title: 'Bio/Biochem reasoning',
+      passage: {
+        label: 'Experiment',
+        paragraphs: [
+          "An enzyme's initial reaction rate is measured across a range of substrate concentrations, producing a hyperbolic curve with a defined Vmax and Km.",
+          "Compound X is added and the run repeated: Vmax is unchanged, but the apparent Km increases. In a separate run, compound Y lowers Vmax while leaving Km unchanged.",
+        ],
+      },
+      questions: [
+        {
+          stem: "Compound X is acting as a(n):",
+          choices: [
+            "competitive inhibitor",
+            "noncompetitive inhibitor",
+            "irreversible denaturant",
+            "allosteric activator",
+          ],
+          answer: 0,
+          explain: "Unchanged Vmax with increased Km is the signature of competitive inhibition, which competes with substrate at the active site.",
+        },
+        {
+          stem: "The effect of compound X can be overcome by:",
+          choices: [
+            "lowering the temperature",
+            "adding much more substrate",
+            "removing all cofactors",
+            "raising the pH sharply",
+          ],
+          answer: 1,
+          explain: "Excess substrate outcompetes a competitive inhibitor, so the original Vmax is still reachable.",
+        },
+        {
+          stem: "Compound Y (lower Vmax, unchanged Km) most likely binds:",
+          choices: [
+            "the active site only",
+            "a site away from the active site, regardless of substrate",
+            "the substrate molecule itself",
+            "nowhere; it only changes the pH",
+          ],
+          answer: 1,
+          explain: "Noncompetitive inhibitors bind an allosteric site and cut Vmax without changing substrate affinity (Km).",
+        },
+        {
+          stem: "If the same reaction is run with far less enzyme but still-excess substrate, the measured Vmax will:",
+          choices: [
+            "decrease, because Vmax depends on enzyme amount",
+            "increase without limit",
+            "stay identical to the first run",
+            "become equal to Km",
+          ],
+          answer: 0,
+          explain: "Vmax = kcat * [enzyme], so less enzyme lowers Vmax; Km (substrate affinity) does not depend on enzyme amount.",
+        },
+        {
+          stem: "A single-base DNA change leaves the encoded protein sequence unchanged. This is best explained by:",
+          choices: [
+            "the redundancy (degeneracy) of the genetic code",
+            "a frameshift mutation",
+            "an error in RNA splicing",
+            "a nonsense mutation",
+          ],
+          answer: 0,
+          explain: "Several codons code for the same amino acid, so a silent substitution leaves the protein intact.",
+        },
+        {
+          stem: "Under anaerobic conditions, a muscle cell keeps glycolysis running mainly by:",
+          choices: [
+            "using the electron transport chain",
+            "fermenting pyruvate to lactate to regenerate NAD+",
+            "speeding up the Krebs cycle",
+            "beta-oxidizing fatty acids",
+          ],
+          answer: 1,
+          explain: "Without O2 the ETC stalls; lactate fermentation reoxidizes NADH to NAD+ so glycolysis (and its 2 ATP) can continue.",
+        },
+      ],
+    },
+
+    psych_soc: {
+      title: 'Psych/Soc reasoning',
+      passage: {
+        label: 'Study',
+        paragraphs: [
+          "Researchers give three groups the same 40-item word list. Group A studies it in one massed hour. Group B studies for the same total time, but spread across four days. Group C reads the list once, then repeatedly tests itself.",
+          "One week later, Group B recalls far more words than Group A, and Group C recalls more than Group A despite spending less total time reading.",
+        ],
+      },
+      questions: [
+        {
+          stem: "Group B's advantage over Group A best illustrates the:",
+          choices: [
+            "spacing effect",
+            "primacy effect",
+            "fundamental attribution error",
+            "bystander effect",
+          ],
+          answer: 0,
+          explain: "Distributing study across days rather than massing it improves long-term retention: the spacing effect.",
+        },
+        {
+          stem: "Group C doing better through repeated self-testing demonstrates the:",
+          choices: [
+            "testing effect (retrieval practice)",
+            "mere-exposure effect",
+            "framing effect",
+            "availability heuristic",
+          ],
+          answer: 0,
+          explain: "Actively retrieving information strengthens memory more than re-reading it: the testing, or retrieval-practice, effect.",
+        },
+        {
+          stem: "Which change would most likely improve Group C even further?",
+          choices: [
+            "read the list two more times",
+            "add correct-answer feedback after each self-test",
+            "switch to studying it all at once",
+            "shorten the delay before the final test",
+          ],
+          answer: 1,
+          explain: "Feedback lets learners correct mistakes, adding to the gains from retrieval practice.",
+        },
+        {
+          stem: "A fourth group recalls the first several words best of all. That edge for early items is the:",
+          choices: [
+            "primacy effect",
+            "recency effect",
+            "spacing effect",
+            "framing effect",
+          ],
+          answer: 0,
+          explain: "Stronger recall for early list items is the primacy effect: they received more rehearsal into long-term memory.",
+        },
+        {
+          stem: "To be sure the spacing benefit is not just the passage of time, the design should add:",
+          choices: [
+            "a group that spaces study but is tested sooner",
+            "a group matched on total study time that studies massed",
+            "more words to the list",
+            "a longer final delay for everyone",
+          ],
+          answer: 1,
+          explain: "Holding total study time constant and varying only massed vs spaced isolates spacing as the cause.",
+        },
+        {
+          stem: "One participant blames a low score on a noisy room but credits a high score to their intelligence. This is the:",
+          choices: [
+            "self-serving bias",
+            "fundamental attribution error",
+            "availability heuristic",
+            "bystander effect",
+          ],
+          answer: 0,
+          explain: "Attributing successes to oneself and failures to the situation is the self-serving bias.",
+        },
+      ],
+    },
+  };
+
+  const KEYS = ['A', 'B', 'C', 'D'];
+  const CONF = [['guess', 'Guessing'], ['unsure', 'Unsure'], ['sure', 'Sure']];
+  const REASONS = [
+    ['content', "Didn't know the content"],
+    ['misread', 'Misread the question'],
+    ['trap', 'Fell for a trap answer'],
+    ['time', 'Rushed the reasoning'],
+    ['math', 'Arithmetic slip'],
+  ];
+  const state = { section: 'cars', bank: BANKS.cars, i: 0, selected: null, confidence: 'unsure', checked: false, results: [], t0: 0 };
+  const esc = (s) => String(s).replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+  const app = () => document.getElementById('app');
+
+  // Optional adaptive ordering: when the dashboard has surfaced a per-section
+  // ability estimate and the items themselves carry difficulty metadata, serve
+  // the most informative item first (the one nearest the student's current
+  // frontier). With no estimate, or items that carry no difficulty, we keep the
+  // bank order, so the existing practice flow is untouched and no difficulty is
+  // ever invented for an item that does not have one.
+  function adaptiveOrder(questions, section) {
+    const list = questions.slice();
+    const v = (typeof window !== 'undefined' && window.__VANTAGE__) || null;
+    const irt = v && v.readiness && v.readiness.irt && v.readiness.irt[section];
+    const theta = irt && typeof irt.theta === 'number' ? irt.theta : null;
+    if (theta === null || !list.some((q) => typeof q.b === 'number')) return list;
+    const info = (q) => {
+      const a = typeof q.a === 'number' ? q.a : 1;
+      const p = 1 / (1 + Math.exp(-a * (theta - q.b)));
+      return a * a * p * (1 - p);
+    };
+    return list
+      .map((q, i) => ({ q, i, score: typeof q.b === 'number' ? info(q) : -1 }))
+      .sort((x, y) => y.score - x.score || x.i - y.i)
+      .map((e) => e.q);
+  }
+
+  function choiceHtml(text, idx) {
+    return `<button class="choice" data-idx="${idx}" aria-pressed="false" onclick="vpractice.choose(${idx})">
+      <span class="choice__key">${KEYS[idx]}</span><span>${esc(text)}</span></button>`;
+  }
+
+  function confHtml() {
+    const chips = CONF.map(([v, label]) =>
+      `<button class="conf ${state.confidence === v ? 'conf--on' : ''}" data-c="${v}" onclick="vpractice.setConf('${v}')">${label}</button>`,
+    ).join('');
+    return `<div class="confrow"><span class="confrow__label">How sure are you?</span><div class="confchips">${chips}</div></div>`;
+  }
+
+  function render() {
+    const bank = state.bank;
+    const q = bank.questions[state.i];
+    const total = bank.questions.length;
+    app().innerHTML = `<div class="wrap">
+    <div class="top">
+      <div class="top__title">${esc(bank.title)}</div>
+      <div class="top__right">
+        <span class="progress">Question ${state.i + 1} of ${total}</span>
+        <button class="linkbtn" onclick="vpy('refresh')">Back to dashboard</button>
+      </div>
+    </div>
+    <div class="pbar"><div class="pbar__fill" style="width:${Math.round((state.i / total) * 100)}%"></div></div>
+    <div class="grid">
+      <section class="passage">
+        <div class="passage__label">${esc(bank.passage.label)}</div>
+        <div class="passage__body">${bank.passage.paragraphs.map((p) => `<p>${esc(p)}</p>`).join('')}</div>
+      </section>
+      <section class="qcard">
+        <div class="qcard__stem">${esc(q.stem)}</div>
+        <div class="choices">${q.choices.map((c, idx) => choiceHtml(c, idx)).join('')}</div>
+        ${confHtml()}
+        <div class="feedback" id="fb" hidden></div>
+        <div class="explain" id="ex" hidden></div>
+        <div class="missrow" id="miss" hidden>
+          <div class="missrow__q">Why did you miss it?</div>
+          <div class="missbtns">${REASONS.map(([v, label]) => `<button class="missbtn" onclick="vpractice.miss('${v}')">${esc(label)}</button>`).join('')}</div>
+        </div>
+        <div class="actions"><button class="pbtn" id="act" disabled onclick="vpractice.check()">Check answer</button></div>
+      </section>
+    </div></div>`;
+    state.t0 = Date.now();
+  }
+
+  function showSummary() {
+    const bank = state.bank;
+    const total = bank.questions.length;
+    const correct = state.results.filter((r) => r.correct).length;
+    app().innerHTML = `<div class="wrap">
+    <div class="top"><div class="top__title">${esc(bank.title)}</div></div>
+    <div class="summary">
+      <div class="summary__score">${correct} of ${total} correct</div>
+      <div class="summary__sub">Your scores update as you practice. The ones you missed come back for review later.</div>
+      <div class="summary__actions">
+        <button class="pbtn" onclick="vpractice.restart()">Practice again</button>
+        <button class="pbtn pbtn--ghost" onclick="vpy('refresh')">Back to dashboard</button>
+      </div>
+    </div></div>`;
+    // Report every item: confidence, correctness, miss reason, and the text of
+    // misses (so the host records outcomes and makes spaced re-review cards).
+    try {
+      pycmd('vantage:practice2:' + encodeURIComponent(JSON.stringify({ section: state.section, items: state.results })));
+    } catch (e) {
+      console.log('practice2', state.results);
+    }
+  }
+
+  function advance() {
+    state.i += 1;
+    state.selected = null;
+    state.confidence = 'unsure';
+    state.checked = false;
+    if (state.i >= state.bank.questions.length) showSummary();
+    else render();
+  }
+
+  window.vpractice = {
+    open(section) {
+      const key = section && BANKS[section] ? section : 'cars';
+      state.section = key;
+      // Clone the bank so the shared source stays pristine, and apply the
+      // ability-frontier ordering (a no-op unless items carry difficulty).
+      const src = BANKS[key];
+      state.bank = { title: src.title, passage: src.passage, questions: adaptiveOrder(src.questions, key) };
+      state.i = 0; state.selected = null; state.confidence = 'unsure'; state.checked = false; state.results = [];
+      render();
+    },
+    setConf(v) {
+      if (state.checked) return;
+      state.confidence = v;
+      document.querySelectorAll('.conf').forEach((el) => el.classList.toggle('conf--on', el.dataset.c === v));
+    },
+    choose(idx) {
+      if (state.checked) return;
+      state.selected = idx;
+      document.querySelectorAll('.choice').forEach((el) => {
+        el.setAttribute('aria-pressed', el.dataset.idx === String(idx) ? 'true' : 'false');
+      });
+      document.getElementById('act').disabled = false;
+    },
+    check() {
+      if (state.checked || state.selected == null) return;
+      const q = state.bank.questions[state.i];
+      const total = state.bank.questions.length;
+      state.checked = true;
+      const correct = state.selected === q.answer;
+      // Report the question text on every item (not just misses): the host anchors
+      // each answered question to a real Anki card + revlog so the outcome syncs.
+      const rec = {
+        correct,
+        confidence: state.confidence,
+        ms: Date.now() - (state.t0 || Date.now()),
+        stem: q.stem,
+        answer: q.choices[q.answer],
+        explain: q.explain,
+      };
+      state.results.push(rec);
+      document.querySelectorAll('.choice').forEach((el, idx) => {
+        el.disabled = true;
+        el.setAttribute('aria-pressed', 'false');
+        if (idx === q.answer) el.classList.add('choice--correct');
+        else if (idx === state.selected) el.classList.add('choice--wrong');
+      });
+      document.querySelectorAll('.conf').forEach((el) => { el.disabled = true; });
+      const fb = document.getElementById('fb');
+      fb.textContent = correct ? 'Correct' : 'Not quite';
+      fb.className = 'feedback ' + (correct ? 'feedback--ok' : 'feedback--no');
+      fb.hidden = false;
+      const ex = document.getElementById('ex');
+      ex.textContent = q.explain;
+      ex.hidden = false;
+      const act = document.getElementById('act');
+      if (correct) {
+        act.textContent = state.i === total - 1 ? 'See results' : 'Next question';
+        act.onclick = () => vpractice.next();
+      } else {
+        act.hidden = true;  // a miss reason (one tap) advances instead
+        document.getElementById('miss').hidden = false;
+      }
+    },
+    miss(reason) {
+      const last = state.results[state.results.length - 1];
+      if (last && !last.correct) last.reason = reason;
+      advance();
+    },
+    next() { advance(); },
+    restart() { this.open(state.section); },
+  };
+
+  window.vpy = window.vpy || function (cmd) { try { pycmd('vantage:' + cmd); } catch (e) { console.log('vpy', cmd); } };
+})();
 </script></body></html>
