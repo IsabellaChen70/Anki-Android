@@ -17,6 +17,7 @@ import anki.decks.DeckKt.FilteredKt.searchTerm
 import anki.decks.DeckKt.filtered
 import anki.decks.filteredDeckForUpdate
 import com.ichi2.anki.CollectionManager.withCol
+import com.ichi2.anki.common.time.TimeManager
 import com.ichi2.anki.libanki.Collection
 import com.ichi2.utils.ViewGroupUtils.setRenderWorkaround
 import kotlinx.coroutines.launch
@@ -73,7 +74,7 @@ class VantageDashboardActivity : AnkiActivity() {
         lifecycleScope.launch {
             val raw =
                 withCol {
-                    val now = System.currentTimeMillis() / 1000
+                    val now = TimeManager.time.intTime()
                     // Only compute retrievability for cards that actually have an
                     // FSRS memory state (a "s" field); new cards (e.g. fresh miss
                     // cards) have empty data and would panic the backend function.
@@ -211,8 +212,21 @@ class VantageDashboardActivity : AnkiActivity() {
                         } catch (e: Exception) {
                             JSONArray()
                         }
+                    // Deck names that have cards. Some decks (e.g. Pankow P/S subdecks)
+                    // encode the AAMC topic in the DECK PATH rather than in card tags;
+                    // the phone matches these via deck_topic_map so topic coverage counts
+                    // them too, mirroring desktop collect.gather's deck_topic loop.
+                    val deckNames = JSONArray()
+                    db
+                        .query("select d.name from decks d where exists (select 1 from cards c where c.did = d.id)")
+                        .use { cursor ->
+                            while (cursor.moveToNext()) {
+                                cursor.getString(0)?.let { deckNames.put(it) }
+                            }
+                        }
                     JSONObject()
                         .put("cards", cards)
+                        .put("deck_names", deckNames)
                         .put("n_reviews", reviews)
                         .put("perf", JSONObject().put("n", pn).put("k", pk))
                         .put("perf_outcomes", merged)
@@ -293,6 +307,17 @@ class VantageDashboardActivity : AnkiActivity() {
                     cmd.startsWith("vantage:study:") -> startSectionStudy(cmd.removePrefix("vantage:study:"))
                     cmd.startsWith("vantage:practice2:") -> recordPractice2(cmd)
                     cmd.startsWith("vantage:practice:") -> recordPractice(cmd)
+                    cmd.startsWith("vantage:examdatesave:") -> {
+                        // Persist-only (no reload): fires on every value change so the exam
+                        // date is committed to config even if the field never blurs before an
+                        // external Sync (the examdate:/reload path fires on blur/Enter).
+                        val iso = cmd.removePrefix("vantage:examdatesave:").trim()
+                        lifecycleScope.launch {
+                            withCol {
+                                if (iso.isEmpty()) config.remove("vantage_exam_date") else config.set("vantage_exam_date", iso)
+                            }
+                        }
+                    }
                     cmd.startsWith("vantage:examdate:") -> {
                         val iso = cmd.removePrefix("vantage:examdate:").trim()
                         lifecycleScope.launch {
@@ -300,6 +325,21 @@ class VantageDashboardActivity : AnkiActivity() {
                                 if (iso.isEmpty()) config.remove("vantage_exam_date") else config.set("vantage_exam_date", iso)
                             }
                             webView.reload()
+                        }
+                    }
+                    cmd.startsWith("vantage:targetsave:") -> {
+                        // Persist-only (no reload): fires on every keystroke so the target
+                        // is committed to config even if the field never blurs before an
+                        // external Sync (the target:/reload path only fires on blur/Enter).
+                        val v = cmd.removePrefix("vantage:targetsave:").trim()
+                        lifecycleScope.launch {
+                            withCol {
+                                if (v.isEmpty()) {
+                                    config.remove("vantage_target_score")
+                                } else {
+                                    v.toDoubleOrNull()?.let { config.set("vantage_target_score", it.toInt()) }
+                                }
+                            }
                         }
                     }
                     cmd.startsWith("vantage:target:") -> {
@@ -477,7 +517,7 @@ class VantageDashboardActivity : AnkiActivity() {
                             }
                         }
                         if (cid != null) {
-                            var newRid = System.currentTimeMillis()
+                            var newRid = TimeManager.time.intTimeMS()
                             while (db.queryScalar("select count() from revlog where id = ?", newRid) > 0) newRid++
                             db.execute(
                                 "insert into revlog (id, cid, usn, ease, ivl, lastIvl, factor, time, type) " +
