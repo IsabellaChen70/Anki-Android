@@ -1,3 +1,11 @@
+# Vantage (MCAT readiness) — Android
+
+This is the Android client for Vantage, an MCAT-readiness study app built on a fork of Anki. It runs the shared topic-interleaving Rust engine and adds a dashboard screen showing three honest scores (memory, performance, readiness), each with a range. See **[VANTAGE.md](./VANTAGE.md)** for what this fork changes, screenshots, and how to install or build it. Download a ready-to-sideload APK from the [latest release](https://github.com/IsabellaChen70/Anki-Android/releases/latest).
+
+The rest of this file is the upstream AnkiDroid README.
+
+---
+
 <p align="center">
 <img alt="" src="docs/graphics/logos/banner_readme.png"/>
 </p>

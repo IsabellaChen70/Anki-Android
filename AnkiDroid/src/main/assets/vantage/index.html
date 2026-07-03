@@ -801,6 +801,12 @@ html, body {
   // log-space with a max-subtraction so a long item list can't underflow. Returns
   // theta (posterior mean), theta_sd (its SD), information (2PL test info at theta).
   // items: [{ correct: 0|1, a, b }]. Fully deterministic (no PRNG).
+  function nowStamp() {
+    const d = new Date();
+    const p = (n) => String(n).padStart(2, '0');
+    return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate()) + ' ' + p(d.getHours()) + ':' + p(d.getMinutes());
+  }
+
   function irtEstimate(items) {
     const grid = irtGrid();
     const logPost = [];
@@ -893,9 +899,20 @@ html, body {
     let weakest = null, weakestPt = Infinity;
     for (const s of usable) if (sections[s].point < weakestPt) { weakestPt = sections[s].point; weakest = s; }
     if (weakest) reasonsOut.push(`weakest section so far: ${OUTLINE.sections[weakest]} (${est[weakest].n} questions)`);
+    const r4 = (x) => Math.round(x * 1e4) / 1e4;
     return {
       abstained: false, how_sure: how, n: nReviews, cars_modeled: false,
       point, low, high, sections, reasons: reasonsOut,
+      // Parity with desktop _readiness: expose the IRT metadata so the readiness
+      // card shows practice-question wording AND practice.js adaptiveOrder can read
+      // each section's latent theta to serve the most-informative item first.
+      model: 'irt_2pl_eap',
+      modeled_sections: usable.slice(),
+      scale_note: '3-section partial of the 472-528 scale; CARS not modeled',
+      irt: usable.reduce((o, s) => {
+        o[s] = { theta: r4(est[s].theta), theta_sd: r4(est[s].theta_sd), information: r4(est[s].information), n: est[s].n };
+        return o;
+      }, {}),
     };
   }
 
@@ -933,8 +950,9 @@ html, body {
       const application = outs.reduce((a, b) => a + b, 0) / outs.length;
       const r = clamp(conceptRecall[cid], 0, 1);
       const gap = r - application;
+      const c = byId[cid.toLowerCase()];
       out.push({
-        concept_id: cid, section: conceptSection[cid] || '',
+        concept_id: cid, name: (c && c.name) || cid, section: conceptSection[cid] || (c && c.section) || '',
         recall: round3(r), application: round3(application), gap: round3(gap),
         n_app: outs.length, fluency_risk: gap >= CFG.fluency_gap_threshold,
       });
@@ -1314,7 +1332,7 @@ html, body {
       n_reviews: nReviews,
       n_cards_seen: rValues.length,
       ai_used: false,
-      updated: raw.updated || '',
+      updated: raw.updated || nowStamp(),
       best_next: nextTops[0] || null,
       next_topics: nextTops,
       book_set: raw.book_set || 'kaplan',
@@ -1351,7 +1369,7 @@ html, body {
     trajectory, isoToOrdinal,
   };
 })();
-</script><script>window.__VANTAGE__ = null; window.__VANTAGE_ERR__ = "Something went wrong computing your scores. Tap Refresh to try again.";</script><script>/* Copyright: Ankitects Pty Ltd and contributors
+</script><script>window.__VANTAGE_LIVE__ = true; window.__VANTAGE__ = null; window.__VANTAGE_ERR__ = "Something went wrong computing your scores. Tap Refresh to try again.";</script><script>/* Copyright: Ankitects Pty Ltd and contributors
    License: GNU AGPL, version 3 or later; http://www.gnu.org/licenses/agpl.html */
 /* Vantage dashboard renderer. Reads window.__VANTAGE__ (injected by the add-on),
    falling back to MOCK for standalone preview. Pure DOM, no framework.
@@ -2190,6 +2208,7 @@ document.addEventListener('DOMContentLoaded', render);
             "chloride ions",
           ],
           answer: 1,
+          b: -0.8,
           explain: "In a buffer, the conjugate base (acetate) neutralizes added strong acid, so the free H+ concentration barely rises.",
         },
         {
@@ -2201,6 +2220,7 @@ document.addEventListener('DOMContentLoaded', render);
             "Kw becomes equal to 1",
           ],
           answer: 0,
+          b: -0.2,
           explain: "pH = pKa + log([A-]/[HA]); when [A-] = [HA], log(1) = 0, so pH = pKa.",
         },
         {
@@ -2212,6 +2232,7 @@ document.addEventListener('DOMContentLoaded', render);
             "100 to 1",
           ],
           answer: 2,
+          b: 0.8,
           explain: "5.76 = 4.76 + log(ratio) gives log(ratio) = 1, so the ratio is 10 to 1 (more conjugate base than acid).",
         },
         {
@@ -2223,6 +2244,7 @@ document.addEventListener('DOMContentLoaded', render);
             "immediately destroy the buffer",
           ],
           answer: 1,
+          b: -1.0,
           explain: "The weak acid neutralizes added base, so pH shifts little: a buffer resists change in both directions.",
         },
         {
@@ -2234,6 +2256,7 @@ document.addEventListener('DOMContentLoaded', render);
             "a catalyst is added",
           ],
           answer: 0,
+          b: 1.2,
           explain: "dG = dH - T*dS; with both positive, raising T makes T*dS outweigh dH, so dG turns negative (spontaneous).",
         },
         {
@@ -2245,6 +2268,7 @@ document.addEventListener('DOMContentLoaded', render);
             "increases the enthalpy change",
           ],
           answer: 1,
+          b: 0.2,
           explain: "A catalyst opens a lower-activation-energy path (forward and reverse equally); it speeds the rate without changing dG or the equilibrium position.",
         },
       ],
@@ -2269,6 +2293,7 @@ document.addEventListener('DOMContentLoaded', render);
             "allosteric activator",
           ],
           answer: 0,
+          b: 0.0,
           explain: "Unchanged Vmax with increased Km is the signature of competitive inhibition, which competes with substrate at the active site.",
         },
         {
@@ -2280,6 +2305,7 @@ document.addEventListener('DOMContentLoaded', render);
             "raising the pH sharply",
           ],
           answer: 1,
+          b: -0.6,
           explain: "Excess substrate outcompetes a competitive inhibitor, so the original Vmax is still reachable.",
         },
         {
@@ -2291,6 +2317,7 @@ document.addEventListener('DOMContentLoaded', render);
             "nowhere; it only changes the pH",
           ],
           answer: 1,
+          b: 0.4,
           explain: "Noncompetitive inhibitors bind an allosteric site and cut Vmax without changing substrate affinity (Km).",
         },
         {
@@ -2302,6 +2329,7 @@ document.addEventListener('DOMContentLoaded', render);
             "become equal to Km",
           ],
           answer: 0,
+          b: 1.0,
           explain: "Vmax = kcat * [enzyme], so less enzyme lowers Vmax; Km (substrate affinity) does not depend on enzyme amount.",
         },
         {
@@ -2313,6 +2341,7 @@ document.addEventListener('DOMContentLoaded', render);
             "a nonsense mutation",
           ],
           answer: 0,
+          b: -0.2,
           explain: "Several codons code for the same amino acid, so a silent substitution leaves the protein intact.",
         },
         {
@@ -2324,6 +2353,7 @@ document.addEventListener('DOMContentLoaded', render);
             "beta-oxidizing fatty acids",
           ],
           answer: 1,
+          b: 0.6,
           explain: "Without O2 the ETC stalls; lactate fermentation reoxidizes NADH to NAD+ so glycolysis (and its 2 ATP) can continue.",
         },
       ],
@@ -2348,6 +2378,7 @@ document.addEventListener('DOMContentLoaded', render);
             "bystander effect",
           ],
           answer: 0,
+          b: -1.2,
           explain: "Distributing study across days rather than massing it improves long-term retention: the spacing effect.",
         },
         {
@@ -2359,6 +2390,7 @@ document.addEventListener('DOMContentLoaded', render);
             "availability heuristic",
           ],
           answer: 0,
+          b: -0.9,
           explain: "Actively retrieving information strengthens memory more than re-reading it: the testing, or retrieval-practice, effect.",
         },
         {
@@ -2370,6 +2402,7 @@ document.addEventListener('DOMContentLoaded', render);
             "shorten the delay before the final test",
           ],
           answer: 1,
+          b: 0.3,
           explain: "Feedback lets learners correct mistakes, adding to the gains from retrieval practice.",
         },
         {
@@ -2381,6 +2414,7 @@ document.addEventListener('DOMContentLoaded', render);
             "framing effect",
           ],
           answer: 0,
+          b: -0.5,
           explain: "Stronger recall for early list items is the primacy effect: they received more rehearsal into long-term memory.",
         },
         {
@@ -2392,6 +2426,7 @@ document.addEventListener('DOMContentLoaded', render);
             "a longer final delay for everyone",
           ],
           answer: 1,
+          b: 1.3,
           explain: "Holding total study time constant and varying only massed vs spaced isolates spacing as the cause.",
         },
         {
@@ -2403,6 +2438,7 @@ document.addEventListener('DOMContentLoaded', render);
             "bystander effect",
           ],
           answer: 0,
+          b: 0.0,
           explain: "Attributing successes to oneself and failures to the situation is the self-serving bias.",
         },
       ],
