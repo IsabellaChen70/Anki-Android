@@ -68,10 +68,10 @@
         <item name="zeroCountColor">#404040</item>
         <!-- Study Screen colors -->
         <item name="showAnswerButtonBackground">#22333f</item>
-        <item name="againButtonBackground">@color/material_red_800</item>
-        <item name="hardButtonBackground">@color/material_blue_grey_800</item>
-        <item name="goodButtonBackground">@color/material_green_800</item>
-        <item name="easyButtonBackground">@color/material_light_blue_800</item>
+        <item name="againButtonBackground">@color/vantage_again</item>
+        <item name="hardButtonBackground">@color/vantage_hard</item>
+        <item name="goodButtonBackground">@color/vantage_good</item>
+        <item name="easyButtonBackground">@color/vantage_easy</item>
         <item name="topBarColor">@color/theme_dark_primary_light</item>
         <item name="maxTimerColor">@color/material_red_300</item>
         <item name="answerButtonTextColor">@color/white</item>

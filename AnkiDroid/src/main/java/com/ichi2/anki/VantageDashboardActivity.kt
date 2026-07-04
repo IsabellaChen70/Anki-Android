@@ -297,6 +297,7 @@ class VantageDashboardActivity : AnkiActivity() {
                 when {
                     cmd == "vantage:back" -> finish()
                     cmd == "vantage:refresh" -> webView.reload()
+                    cmd == "vantage:sync:trigger" -> triggerSync(webView)
                     // Interleaved / whole-deck study: Anki's own reviewer + queue.
                     cmd == "vantage:study" || cmd == "vantage:study:interleave" -> {
                         startActivity(Reviewer.getIntent(this@VantageDashboardActivity))
@@ -372,6 +373,32 @@ class VantageDashboardActivity : AnkiActivity() {
     }
 
     /**
+     * Additive Sync button: run AnkiDroid's real collection sync (the same backend
+     * call the manual and auto sync use), then reload the dashboard so the scores
+     * reflect anything pulled. On top of auto-sync on open/close, not a replacement.
+     * On success the reload resets the button; on failure we tell the webview so it
+     * shows a plain-language message.
+     */
+    private fun triggerSync(web: WebView) {
+        val auth = syncAuth()
+        if (auth == null) {
+            web.evaluateJavascript("window.vantageSyncDone && window.vantageSyncDone(false)", null)
+            return
+        }
+        lifecycleScope.launch {
+            try {
+                withProgress("Syncing") {
+                    withCol { syncCollection(auth, syncMedia = false) }
+                }
+                web.reload()
+            } catch (e: Exception) {
+                timber.log.Timber.w(e, "Vantage manual sync failed")
+                web.evaluateJavascript("window.vantageSyncDone && window.vantageSyncDone(false)", null)
+            }
+        }
+    }
+
+    /**
      * Study one section's flashcards on the shared engine: gather the section's
      * tagged cards into a filtered deck (via the backend, real FSRS scheduling),
      * select it, then hand off to Anki's own reviewer.
@@ -391,7 +418,9 @@ class VantageDashboardActivity : AnkiActivity() {
                                 reschedule = true
                                 searchTerms.add(
                                     searchTerm {
-                                        search = "tag:mcat::$section::* -is:suspended"
+                                        // Due only (new + due), matching the desktop
+                                        // "Flashcards" flow. Grading reschedules normally.
+                                        search = "tag:mcat::$section::* -is:suspended (is:new OR is:due)"
                                         limit = 200
                                         order =
                                             Deck.Filtered.SearchTerm.Order
@@ -459,6 +488,9 @@ class VantageDashboardActivity : AnkiActivity() {
                 return
             }
         val section = json.optString("section", "")
+        // "practice" or "test": tags each answer so Test-mode results are
+        // distinguishable in reporting, while feeding the SAME performance pipeline.
+        val mode = json.optString("mode", "")
         val items = json.optJSONArray("items") ?: return
         lifecycleScope.launch {
             withCol {
@@ -543,6 +575,7 @@ class VantageDashboardActivity : AnkiActivity() {
                             .put("reason", it.optString("reason", ""))
                             .put("concept", concept)
                             .put("ms", ms)
+                            .put("mode", mode)
                     if (rid != null) {
                         // link metacognition to its revlog outcome so the merge on read
                         // counts this answer once, not twice.

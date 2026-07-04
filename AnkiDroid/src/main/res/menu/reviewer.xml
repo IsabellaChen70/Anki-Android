@@ -210,6 +210,11 @@
         android:icon="@drawable/ic_fast_forward"
         android:title="@string/toggle_auto_advance" />
     <item
+        android:id="@+id/action_vantage_dashboard"
+        android:icon="@drawable/ic_bar_chart_black"
+        android:title="@string/menu_vantage_dashboard"
+        ankidroid:showAsAction="always"/>
+    <item
         android:id="@+id/user_action_1"
         android:icon="@drawable/user_action_1"
         android:title="@string/user_action_1"

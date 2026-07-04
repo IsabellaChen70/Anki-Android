@@ -18,6 +18,12 @@
     <color name="wb_fg_color_inv">#0099FF</color>
     <color name="transparent">#00000000</color>
     <color name="white">#ffffff</color>
+    <!-- Vantage reviewer palette: matches the dashboard's rate buttons -->
+    <color name="vantage_again">#dc2626</color>
+    <color name="vantage_hard">#d97706</color>
+    <color name="vantage_good">#059669</color>
+    <color name="vantage_easy">#2563eb</color>
+    <color name="vantage_gray900">#111827</color>
     <color name="black">#000000</color>
     <color name="semi_transparent_black">#80000000</color>
 

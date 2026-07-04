@@ -536,6 +536,10 @@ open class Reviewer :
                 Timber.i("Card Viewer:: Previous Card Info")
                 openPreviousCardInfo()
             }
+            R.id.action_vantage_dashboard -> {
+                Timber.i("Reviewer:: Vantage dashboard pressed")
+                startActivity(VantageDashboardActivity.getIntent(this))
+            }
             R.id.user_action_1 -> userAction(1)
             R.id.user_action_2 -> userAction(2)
             R.id.user_action_3 -> userAction(3)
